@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DCE 系统学习资源库 v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--surf:#fff;--surf2:#f0ede6;--bdr:#e2ddd4;--txt:#1c1a16;--txt2:#5c5850;--txt3:#9c9790;--acc:#1a6b5a;--accl:#e6f4f0;--acc2:#c4832a;--acc2l:#fdf3e3;--red:#b53c3c;--redl:#fdf0f0;--mono:'JetBrains Mono',monospace;--serif:'Noto Serif SC',serif;--sans:'Noto Sans SC',sans-serif;--nw:248px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);font-size:15px;line-height:1.75;display:flex;min-height:100vh}
+
+/* ── NAV ── */
+nav{width:var(--nw);min-width:var(--nw);background:var(--surf);border-right:1px solid var(--bdr);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;padding-bottom:2rem}
+.nav-brand{padding:1.25rem 1.25rem 0.875rem;border-bottom:1px solid var(--bdr)}
+.nav-brand h1{font-family:var(--serif);font-size:14.5px;line-height:1.45;color:var(--txt);font-weight:600}
+.nav-brand p{font-size:10.5px;color:var(--txt3);margin-top:2px;letter-spacing:.05em}
+.mode-bar{display:flex;align-items:center;justify-content:space-between;padding:.625rem 1.25rem;background:var(--surf2);border-bottom:1px solid var(--bdr);font-size:11.5px;color:var(--txt2)}
+.mode-btn{background:var(--acc);color:#fff;border:none;border-radius:20px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:var(--sans);transition:background .15s}
+.mode-btn:hover{background:#155a4a}
+.mode-btn.advanced{background:var(--acc2)}
+.nav-sec{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--txt3);padding:.875rem 1.25rem .35rem}
+nav a{display:flex;align-items:center;gap:8px;padding:.45rem 1.25rem;font-size:13px;color:var(--txt2);text-decoration:none;border-left:2px solid transparent;transition:all .15s;position:relative}
+nav a:hover{background:var(--bg);color:var(--txt)}
+nav a.active{border-left-color:var(--acc);color:var(--acc);background:var(--accl);font-weight:500}
+nav a .ni{width:15px;text-align:center;font-size:12px;flex-shrink:0}
+nav a .np{margin-left:auto;width:7px;height:7px;border-radius:50%;background:var(--acc);opacity:0;transition:opacity .2s}
+nav a.visited .np{opacity:.5}
+nav a.active .np{opacity:1}
+.new-tag{font-size:9px;background:var(--acc2l);color:var(--acc2);border:1px solid #ecc97a;border-radius:10px;padding:1px 6px;margin-left:4px;font-weight:500}
+
+/* ── MAIN ── */
+main{flex:1;max-width:900px}
+.sec{padding:2.75rem 3rem 2rem;border-bottom:1px solid var(--bdr);display:none}
+.sec.active{display:block}
+.sec-hd{margin-bottom:1.75rem}
+.sec-hd h2{font-family:var(--serif);font-size:24px;font-weight:600;margin-bottom:.4rem}
+.sec-hd p{color:var(--txt2);font-size:13.5px;max-width:620px;line-height:1.7}
+
+/* ── CARDS & GRIDS ── */
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:1.375rem;margin-bottom:1.125rem}
+.card h3{font-family:var(--serif);font-size:15.5px;margin-bottom:.625rem;display:flex;align-items:center;gap:8px}
+.card p{font-size:13px;color:var(--txt2);line-height:1.7}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.875rem;margin-bottom:1.25rem}
+.small-card{background:var(--surf);border:1px solid var(--bdr);border-radius:8px;padding:1.125rem}
+.small-card h4{font-size:13px;font-weight:500;margin-bottom:.375rem;color:var(--txt)}
+.small-card p{font-size:12px;color:var(--txt2);margin:0;line-height:1.6}
+.small-card .icon{font-size:18px;margin-bottom:.4rem;display:block}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+.bt{background:var(--accl);color:var(--acc)}
+.ba{background:var(--acc2l);color:var(--acc2)}
+.br{background:var(--redl);color:var(--red)}
+
+/* ── TABS ── */
+.dtabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.375rem}
+.dtab{padding:5px 15px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid var(--bdr);background:var(--surf);color:var(--txt2);transition:all .15s}
+.dtab:hover{border-color:var(--acc);color:var(--acc)}
+.dtab.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.dpanel,.apanel{display:none}
+.dpanel.active,.apanel.active{display:block}
+.atabs{display:flex;border-bottom:1px solid var(--bdr);margin-bottom:1.375rem}
+.atab{padding:7px 16px;font-size:13px;cursor:pointer;color:var(--txt2);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.atab:hover{color:var(--txt)}
+.atab.active{color:var(--acc);border-bottom-color:var(--acc);font-weight:500}
+
+/* ── ATTR TABLE ── */
+.attr-table{width:100%;border-collapse:collapse;font-size:13px}
+.attr-table th{background:var(--surf2);font-weight:500;padding:7px 12px;text-align:left;border-bottom:1px solid var(--bdr);color:var(--txt2);font-size:11.5px;letter-spacing:.04em}
+.attr-table td{padding:9px 12px;border-bottom:1px solid var(--bdr);vertical-align:top}
+.attr-table tr:last-child td{border-bottom:none}
+.attr-table td:first-child{font-weight:500;color:var(--txt);white-space:nowrap}
+.lvls{display:flex;flex-wrap:wrap;gap:4px}
+.lpill{display:inline-block;background:var(--surf2);border:1px solid var(--bdr);border-radius:4px;padding:1px 7px;font-size:11.5px;color:var(--txt2);font-family:var(--mono)}
+
+/* ── CODE ── */
+.code-wrap{position:relative;border-radius:10px;overflow:hidden;border:1px solid #2d333d;margin:1rem 0}
+.code-wrap pre{margin:0;border-radius:0;font-size:12px;line-height:1.6;max-height:480px;overflow-y:auto}
+.code-wrap pre code{font-family:var(--mono)!important}
+.copy-btn{position:absolute;top:9px;right:11px;z-index:2;background:#ffffff1a;border:1px solid #ffffff28;color:#bbb;padding:3px 9px;border-radius:5px;font-size:11px;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.copy-btn:hover{background:#ffffff2a;color:#fff}
+.note{background:#f0f9f6;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:.75rem 1.125rem;margin:.875rem 0;font-size:13px;color:#1c4a40}
+.warn{background:var(--acc2l);border-left:3px solid var(--acc2);border-radius:0 8px 8px 0;padding:.75rem 1.125rem;margin:.875rem 0;font-size:13px;color:#6b4c12}
+.err{background:var(--redl);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:.75rem 1.125rem;margin:.875rem 0;font-size:13px;color:#7a2020}
+hr.div{border:none;border-top:1px solid var(--bdr);margin:1.75rem 0}
+h4.sub{font-size:14px;font-weight:500;margin:1.25rem 0 .5rem;color:var(--txt)}
+
+/* ── TOOLS ── */
+.tool-panel{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:1.5rem;margin-bottom:1.375rem}
+.tool-panel h3{font-family:var(--serif);font-size:16.5px;margin-bottom:.5rem;color:var(--txt)}
+.tool-panel>p{font-size:13px;color:var(--txt2);margin-bottom:1.25rem;line-height:1.6}
+.form-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap}
+.form-row label{font-size:13px;color:var(--txt2);min-width:100px;flex-shrink:0}
+.form-row input,.form-row select{border:1px solid var(--bdr);border-radius:6px;padding:6px 10px;font-size:13px;font-family:var(--sans);background:var(--surf);color:var(--txt);transition:border-color .15s;min-width:0}
+.form-row input:focus,.form-row select:focus{outline:none;border-color:var(--acc)}
+.form-row input[type=number]{width:90px}
+.form-row input[type=text]{flex:1;min-width:120px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--acc);color:#fff;border:none;border-radius:7px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:var(--sans);font-weight:500;transition:background .15s}
+.btn:hover{background:#155a4a}
+.btn-ghost{background:transparent;color:var(--acc);border:1px solid var(--acc);border-radius:7px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.btn-ghost:hover{background:var(--accl)}
+.btn-sm{padding:4px 10px;font-size:12px}
+.btn-red{background:var(--red)}
+.btn-red:hover{background:#8a2a2a}
+.btn-amber{background:var(--acc2)}
+.btn-amber:hover{background:#a8691f}
+.attr-row{display:grid;grid-template-columns:1fr 1.4fr auto;gap:.5rem;align-items:center;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:.625rem .875rem;margin-bottom:.5rem}
+.attr-row input{border:1px solid var(--bdr);border-radius:5px;padding:5px 8px;font-size:12.5px;font-family:var(--sans);background:#fff;color:var(--txt)}
+.attr-row input:focus{outline:none;border-color:var(--acc)}
+.attr-row label{font-size:11px;color:var(--txt3);display:block;margin-bottom:2px}
+.attr-row .rm{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:16px;padding:2px 4px;transition:color .15s}
+.attr-row .rm:hover{color:var(--red)}
+.result-box{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:1rem 1.25rem;margin-top:1rem;font-size:13.5px}
+.result-box .big{font-size:28px;font-weight:600;color:var(--acc);font-family:var(--mono)}
+.result-box .lbl{font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:.875rem}
+.result-item{background:var(--surf);border:1px solid var(--bdr);border-radius:7px;padding:.75rem;text-align:center}
+.result-item .rv{font-size:20px;font-weight:600;color:var(--acc);font-family:var(--mono)}
+.result-item .rl{font-size:11px;color:var(--txt3);margin-top:2px}
+
+/* ── WIZARD ── */
+.wizard-step{display:none}
+.wizard-step.active{display:block}
+.wiz-q{font-size:14.5px;font-weight:500;color:var(--txt);margin-bottom:.875rem}
+.wiz-opts{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.wiz-opt{padding:7px 16px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;cursor:pointer;background:var(--surf);color:var(--txt2);transition:all .15s}
+.wiz-opt:hover{border-color:var(--acc);color:var(--acc)}
+.wiz-opt.sel{border-color:var(--acc);background:var(--accl);color:var(--acc);font-weight:500}
+.wiz-nav{display:flex;gap:.5rem;align-items:center;margin-top:.75rem}
+.wiz-prog{font-size:12px;color:var(--txt3);margin-left:auto}
+.rec-box{background:var(--accl);border:1.5px solid var(--acc);border-radius:10px;padding:1.25rem 1.5rem}
+.rec-box h4{color:var(--acc);font-size:15px;font-weight:600;margin-bottom:.5rem}
+.rec-box p{font-size:13px;color:#1c4a40;line-height:1.65}
+.rec-why{margin-top:.75rem;padding-top:.75rem;border-top:1px solid #a8d8ce}
+.rec-why p{font-size:12.5px;color:#2a6a58}
+
+/* ── MODEL COMPARISON ── */
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cmp-table th{background:var(--acc);color:#fff;padding:9px 14px;text-align:left;font-weight:500;font-size:12px}
+.cmp-table th:first-child{background:var(--surf2);color:var(--txt2)}
+.cmp-table td{padding:9px 14px;border-bottom:1px solid var(--bdr);vertical-align:middle}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:first-child{font-weight:500;color:var(--txt);background:var(--surf2);font-size:12.5px}
+.cmp-table tr:hover td{background:#f5f5f0}
+.cmp-table tr:hover td:first-child{background:var(--surf2)}
+.chk{color:var(--acc);font-weight:600}
+.x{color:var(--red)}
+.mid{color:var(--acc2)}
+
+/* ── FAQ ── */
+.faq-item{border:1px solid var(--bdr);border-radius:9px;margin-bottom:.75rem;overflow:hidden}
+.faq-q{padding:.875rem 1.125rem;font-size:13.5px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--surf);transition:background .15s}
+.faq-q:hover{background:var(--surf2)}
+.faq-q .arr{font-size:12px;color:var(--txt3);transition:transform .2s}
+.faq-a{display:none;padding:.875rem 1.125rem;border-top:1px solid var(--bdr);background:var(--surf2);font-size:13px;color:var(--txt2);line-height:1.7}
+.faq-item.open .faq-q{background:var(--surf2)}
+.faq-item.open .faq-q .arr{transform:rotate(180deg)}
+.faq-item.open .faq-a{display:block}
+.faq-a code{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--bdr);border-radius:4px;padding:1px 5px}
+.faq-a pre{background:#1e2228;color:#abb2bf;border-radius:7px;padding:.75rem 1rem;font-size:12px;font-family:var(--mono);margin:.625rem 0;line-height:1.55;overflow-x:auto}
+
+/* ── INTRO FLOW ── */
+.flow-wrap{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:1.25rem 0}
+.fn{background:var(--surf);border:1px solid var(--bdr);border-radius:7px;padding:6px 13px;font-size:13px;color:var(--txt2);cursor:pointer;transition:all .15s;font-weight:500}
+.fn:hover,.fn.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.fa{color:var(--txt3);font-size:14px}
+.flow-desc{background:var(--accl);border:1px solid #a8d8ce;border-radius:8px;padding:.75rem 1rem;margin:.5rem 0 1rem;font-size:13px;color:#1c4a40;min-height:48px;transition:all .2s}
+
+/* ── TOOLTIP ── */
+[data-tip]{border-bottom:1px dashed var(--acc);cursor:help;color:var(--acc)}
+#tip-pop{position:fixed;background:#1e2228;color:#e0e0e0;border-radius:7px;padding:.5rem .875rem;font-size:12px;max-width:260px;line-height:1.55;pointer-events:none;opacity:0;transition:opacity .15s;z-index:9999;box-shadow:0 4px 16px #0003}
+#tip-pop.show{opacity:1}
+
+/* ── PROGRESS ── */
+.prog-bar{height:3px;background:var(--bdr);border-radius:2px;margin:.625rem 1.25rem .25rem;overflow:hidden}
+.prog-fill{height:100%;background:var(--acc);border-radius:2px;transition:width .4s}
+
+/* ── REFS ── */
+.ref-list{list-style:none}
+.ref-list li{padding:.875rem 0;border-bottom:1px solid var(--bdr);display:flex;gap:.875rem;align-items:flex-start}
+.ref-list li:last-child{border-bottom:none}
+.rnum{min-width:22px;height:22px;background:var(--surf2);border-radius:50%;font-size:10.5px;font-weight:600;color:var(--txt2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.rcont{font-size:12.5px;line-height:1.7;color:var(--txt2)}
+.rcont strong{color:var(--txt)}
+.pkg-grid{display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin:1rem 0}
+.pkg-card{background:var(--surf);border:1px solid var(--bdr);border-radius:8px;padding:.875rem}
+.pkg-card h4{font-family:var(--mono);font-size:13px;color:var(--acc);margin-bottom:.3rem}
+.pkg-card p{font-size:12px;color:var(--txt2);margin:0}
+
+/* ── ADVANCED MODE ── */
+.adv-only{display:none}
+body.advanced .adv-only{display:block}
+.adv-badge{display:none;font-size:10px;background:#fff8e6;border:1px solid #ecc97a;color:var(--acc2);border-radius:3px;padding:0 5px;margin-left:6px;vertical-align:middle}
+body.advanced .adv-badge{display:inline}
+
+/* ── DATA SIM ── */
+.sim-attrs{max-height:280px;overflow-y:auto;margin-bottom:.875rem}
+.sim-attr-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:.5rem;align-items:start;margin-bottom:.5rem;background:var(--surf2);border:1px solid var(--bdr);border-radius:7px;padding:.5rem .75rem}
+.sim-attr-row label{font-size:11px;color:var(--txt3);display:block;margin-bottom:2px}
+.sim-attr-row input{width:100%;border:1px solid var(--bdr);border-radius:4px;padding:4px 7px;font-size:12px;font-family:var(--sans);background:#fff;color:var(--txt)}
+.sim-attr-row input:focus{outline:none;border-color:var(--acc)}
+.dl-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surf2);color:var(--acc);border:1.5px solid var(--acc);border-radius:7px;padding:6px 14px;font-size:12.5px;cursor:pointer;font-family:var(--sans);transition:all .15s;text-decoration:none}
+.dl-btn:hover{background:var(--accl)}
+
+/* ── QUESTIONNAIRE GEN ── */
+.qs-table{border-collapse:collapse;font-size:12.5px;margin-bottom:.75rem;width:100%}
+.qs-table th{background:var(--acc);color:#fff;padding:6px 12px;text-align:left;font-weight:500;font-size:11.5px}
+.qs-table td{border:1px solid var(--bdr);padding:7px 12px;background:var(--surf)}
+.qs-task{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:1rem;margin-bottom:.75rem}
+.qs-task .task-num{font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;font-weight:500}
+.qs-output{max-height:420px;overflow-y:auto;background:#fafaf8;border:1px solid var(--bdr);border-radius:8px;padding:1rem}
+
+@media(max-width:700px){nav{display:none}.sec{padding:1.5rem 1.25rem}.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- TOOLTIP POPUP -->
+<div id="tip-pop"></div>
+
+<nav id="nav">
+  <div class="nav-brand">
+    <h1>离散选择实验<br>系统学习资源库</h1>
+    <p>DCE · v2.0 · 2024</p>
+  </div>
+  <div class="mode-bar">
+    <span>新手模式</span>
+    <button class="mode-btn" id="mode-btn" onclick="toggleMode()">切换进阶</button>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+
+  <div class="nav-sec">基础</div>
+  <a href="#" data-sec="intro" class="active" onclick="nav(this)"><span class="ni">📖</span>什么是 DCE<span class="np"></span></a>
+
+  <div class="nav-sec">研究工具</div>
+  <a href="#" data-sec="tools-design" onclick="nav(this)"><span class="ni">🧰</span>研究设计工具<span class="new-tag">新</span><span class="np"></span></a>
+  <a href="#" data-sec="attrs" onclick="nav(this)"><span class="ni">🏷</span>属性与水平库<span class="np"></span></a>
+
+  <div class="nav-sec">R 代码</div>
+  <a href="#" data-sec="design" onclick="nav(this)"><span class="ni">⚙️</span>问卷设计代码<span class="np"></span></a>
+  <a href="#" data-sec="analysis" onclick="nav(this)"><span class="ni">📊</span>数据分析代码<span class="np"></span></a>
+  <a href="#" data-sec="tools-prac" onclick="nav(this)"><span class="ni">🔬</span>实用工具<span class="new-tag">新</span><span class="np"></span></a>
+
+  <div class="nav-sec">参考</div>
+  <a href="#" data-sec="compare" onclick="nav(this)"><span class="ni">📋</span>模型对比<span class="new-tag">新</span><span class="np"></span></a>
+  <a href="#" data-sec="faq" onclick="nav(this)"><span class="ni">❓</span>常见问题<span class="new-tag">新</span><span class="np"></span></a>
+  <a href="#" data-sec="refs" onclick="nav(this)"><span class="ni">📚</span>文献 & 包<span class="np"></span></a>
+</nav>
+
+<main>
+
+<!-- ════════════ INTRO ════════════ -->
+<div id="intro" class="sec active">
+<div class="sec-hd">
+  <h2>什么是离散选择实验？</h2>
+  <p>DCE 基于<span data-tip="random-utility">随机效用理论</span>，通过让受访者在假想选项间反复权衡，量化属性的相对重要性与<span data-tip="wtp">支付意愿（WTP）</span>。</p>
+</div>
+<div class="grid3">
+  <div class="small-card"><span class="icon">🎯</span><h4>属性 (Attribute)</h4><p>描述选项特征的维度，每个 DCE 通常含 4–8 个属性。</p></div>
+  <div class="small-card"><span class="icon">📏</span><h4>水平 (Level)</h4><p>属性的具体取值，每个属性通常设 2–5 个水平。</p></div>
+  <div class="small-card"><span class="icon">📋</span><h4>选择集 (Choice Set)</h4><p>受访者单次面对的选项组合，通常含 2–3 个备选方案。</p></div>
+  <div class="small-card"><span class="icon">🔧</span><h4>实验设计 (Design)</h4><p>决定属性水平如何组合成选择集的方案。</p></div>
+  <div class="small-card"><span class="icon">💰</span><h4>支付意愿 (WTP)</h4><p>受访者为某属性水平变化愿意支付的最大金额。</p></div>
+  <div class="small-card"><span class="icon">📈</span><h4>随机效用模型</h4><p>U = V + ε，不同误差假设对应不同模型形式。</p></div>
+</div>
+
+<div class="card">
+  <h3>⚡ DCE 研究流程（点击节点查看说明）</h3>
+  <div class="flow-wrap">
+    <span class="fn" data-flow="0">确定研究问题</span><span class="fa">→</span>
+    <span class="fn" data-flow="1">选择属性与水平</span><span class="fa">→</span>
+    <span class="fn" data-flow="2">实验设计</span><span class="fa">→</span>
+    <span class="fn" data-flow="3">问卷构建</span><span class="fa">→</span>
+    <span class="fn" data-flow="4">数据收集</span><span class="fa">→</span>
+    <span class="fn" data-flow="5">计量建模</span><span class="fa">→</span>
+    <span class="fn" data-flow="6">结果解释</span>
+  </div>
+  <div class="flow-desc" id="flow-desc">点击上方任一步骤查看详细说明与常见注意事项。</div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>📌 效用函数</h3>
+    <p style="font-family:var(--mono);font-size:13px;background:var(--surf2);padding:.75rem;border-radius:6px;line-height:2">V<sub>nij</sub> = β₁X₁ + β₂X₂ + ... + βₖXₖ<br>P(i|C) = exp(Vᵢ) / Σⱼ exp(Vⱼ)</p>
+    <p style="margin-top:.5rem">β 系数通过<span data-tip="mle">最大似然估计</span>得到，代表属性对效用的边际贡献。</p>
+  </div>
+  <div class="card">
+    <h3>📌 WTP 计算</h3>
+    <p style="font-family:var(--mono);font-size:13px;background:var(--surf2);padding:.75rem;border-radius:6px;line-height:2">WTP = −(β<sub>attr</sub> / β<sub>cost</sub>)<br>置信区间：<span data-tip="kr">Krinsky-Robb</span> 法</p>
+    <p style="margin-top:.5rem">价格系数符号应为负，WTP 正值表示愿意支付溢价。</p>
+  </div>
+</div>
+
+<div class="card adv-only">
+  <h3>🔬 <span class="adv-badge">进阶</span> 三大模型简述</h3>
+  <p><strong>条件 Logit (CL)</strong> — 固定参数，满足 <span data-tip="iia">IIA</span>，最简单；<strong>混合 Logit (MXL)</strong> — 随机参数，允许连续偏好异质性，最常用；<strong>潜在类别 (LCM)</strong> — 离散分群，适合市场细分分析。详见「模型对比」页面。</p>
+</div>
+</div>
+
+<!-- ════════════ DESIGN TOOLS ════════════ -->
+<div id="tools-design" class="sec">
+<div class="sec-hd">
+  <h2>研究设计工具</h2>
+  <p>交互式工具帮助你从属性定义、设计方法选择到样本量计算，完成 DCE 的前期准备。</p>
+</div>
+
+<div class="dtabs">
+  <div class="dtab active" onclick="showDTab('attr-gen',this)">🛠 属性生成器</div>
+  <div class="dtab" onclick="showDTab('sample-calc',this)">📐 样本量计算</div>
+  <div class="dtab" onclick="showDTab('method-rec',this)">🎯 设计方法推荐</div>
+</div>
+
+<!-- TAB: ATTR GENERATOR -->
+<div id="dp-attr-gen" class="dpanel active">
+  <div class="tool-panel">
+    <h3>🛠 属性与水平生成器</h3>
+    <p>填写属性和水平后，自动生成对应的 R 设计代码。</p>
+
+    <div class="form-row">
+      <label>设计方法</label>
+      <select id="design-method" onchange="updateGenCode()">
+        <option value="orthogonal">正交设计 (Orthogonal)</option>
+        <option value="doptimal" selected>D-optimal 设计</option>
+        <option value="maximal">最大化设计 (Federov)</option>
+      </select>
+      <label style="margin-left:.5rem">每组选项数</label>
+      <select id="n-alts" onchange="updateGenCode()"><option value="2" selected>2</option><option value="3">3</option></select>
+      <label style="margin-left:.5rem">选择集数</label>
+      <input type="number" id="n-sets" value="12" min="4" max="32" onchange="updateGenCode()" style="width:70px">
+    </div>
+
+    <h4 class="sub">属性定义</h4>
+    <div id="attr-rows"></div>
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+      <button class="btn btn-sm" onclick="addAttr()">＋ 添加属性</button>
+      <button class="btn-ghost btn-sm" onclick="loadPreset()">载入示例（医疗卫生）</button>
+    </div>
+
+    <div id="gen-code-wrap" style="display:none">
+      <h4 class="sub">生成的 R 代码</h4>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+        <pre><code class="language-r" id="gen-code"></code></pre>
+      </div>
+    </div>
+    <div id="gen-placeholder" class="note" style="margin-top:0">请先添加至少 2 个属性，然后填写水平（用英文逗号分隔），代码将自动生成。</div>
+  </div>
+</div>
+
+<!-- TAB: SAMPLE SIZE -->
+<div id="dp-sample-calc" class="dpanel">
+  <div class="tool-panel">
+    <h3>📐 样本量计算器</h3>
+    <p>基于 Orme (2010) 与 Johnson &amp; Orme (2003) 规则，计算 DCE 所需最低样本量。</p>
+    <div class="grid2" style="margin-bottom:1rem">
+      <div>
+        <div class="form-row"><label>选择任务数 (t)</label><input type="number" id="ss-t" value="12" min="1" max="30" oninput="calcSS()"></div>
+        <div class="form-row"><label>每组选项数 (a)</label><input type="number" id="ss-a" value="2" min="2" max="4" oninput="calcSS()"></div>
+        <div class="form-row"><label>最大水平数 (c)</label><input type="number" id="ss-c" value="4" min="2" max="8" oninput="calcSS()"></div>
+        <div class="form-row"><label>分析方法</label>
+          <select id="ss-model" onchange="calcSS()">
+            <option value="cl">条件 Logit (CL)</option>
+            <option value="mxl">混合 Logit (MXL)</option>
+            <option value="lcm">潜在类别 (LCM)</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="result-box" id="ss-result">
+          <div class="lbl">最低样本量估计</div>
+          <div class="big" id="ss-n">—</div>
+          <div style="font-size:12px;color:var(--txt2);margin-top:4px" id="ss-formula">填写参数后自动计算</div>
+        </div>
+      </div>
+    </div>
+    <div class="result-grid" id="ss-detail" style="display:none">
+      <div class="result-item"><div class="rv" id="ss-orme">—</div><div class="rl">Orme法则</div></div>
+      <div class="result-item"><div class="rv" id="ss-jo">—</div><div class="rl">J&amp;O法则</div></div>
+      <div class="result-item"><div class="rv" id="ss-obs">—</div><div class="rl">总观测数</div></div>
+      <div class="result-item"><div class="rv" id="ss-tasks">—</div><div class="rl">总选择任务数</div></div>
+    </div>
+    <div class="warn" style="margin-top:1rem"><strong>注意：</strong>以上为理论最低值，实际研究建议额外增加 20–30% 以应对无效问卷和数据损失。MXL 模型通常需要 300 人以上，LCM 需要 400 人以上才能稳定估计。</div>
+  </div>
+</div>
+
+<!-- TAB: METHOD RECOMMENDER -->
+<div id="dp-method-rec" class="dpanel">
+  <div class="tool-panel">
+    <h3>🎯 设计方法推荐引擎</h3>
+    <p>回答以下问题，获得针对你研究情境的设计方法建议。</p>
+    <div id="wiz-container">
+      <div class="wizard-step active" id="ws-0">
+        <div class="wiz-q">Q1. 您的研究有多少个属性，总水平数大约是多少？</div>
+        <div class="wiz-opts">
+          <div class="wiz-opt" onclick="wizSelect(0,'small',this)">少（属性≤4，总水平≤12）</div>
+          <div class="wiz-opt" onclick="wizSelect(0,'medium',this)">中（属性4–6，总水平12–30）</div>
+          <div class="wiz-opt" onclick="wizSelect(0,'large',this)">多（属性≥6，总水平≥30）</div>
+        </div>
+        <div class="wiz-nav"><button class="btn btn-sm" onclick="wizNext(1)">下一题 →</button><span class="wiz-prog">1 / 4</span></div>
+      </div>
+      <div class="wizard-step" id="ws-1">
+        <div class="wiz-q">Q2. 是否有来自文献或预实验的先验参数估计？</div>
+        <div class="wiz-opts">
+          <div class="wiz-opt" onclick="wizSelect(1,'yes',this)">有（有文献meta或预实验结果）</div>
+          <div class="wiz-opt" onclick="wizSelect(1,'no',this)">没有（零先验）</div>
+        </div>
+        <div class="wiz-nav"><button class="btn-ghost btn-sm" onclick="wizBack(0)">← 返回</button><button class="btn btn-sm" onclick="wizNext(2)">下一题 →</button><span class="wiz-prog">2 / 4</span></div>
+      </div>
+      <div class="wizard-step" id="ws-2">
+        <div class="wiz-q">Q3. 研究领域是什么？</div>
+        <div class="wiz-opts">
+          <div class="wiz-opt" onclick="wizSelect(2,'health',this)">医疗卫生 / 药学</div>
+          <div class="wiz-opt" onclick="wizSelect(2,'env',this)">环境 / 农业 / 食品</div>
+          <div class="wiz-opt" onclick="wizSelect(2,'market',this)">市场营销 / 消费品</div>
+          <div class="wiz-opt" onclick="wizSelect(2,'transport',this)">交通 / 基础设施</div>
+        </div>
+        <div class="wiz-nav"><button class="btn-ghost btn-sm" onclick="wizBack(1)">← 返回</button><button class="btn btn-sm" onclick="wizNext(3)">下一题 →</button><span class="wiz-prog">3 / 4</span></div>
+      </div>
+      <div class="wizard-step" id="ws-3">
+        <div class="wiz-q">Q4. 预期样本量大约是多少？</div>
+        <div class="wiz-opts">
+          <div class="wiz-opt" onclick="wizSelect(3,'lt100',this)">小（＜100人）</div>
+          <div class="wiz-opt" onclick="wizSelect(3,'100-300',this)">中（100–300人）</div>
+          <div class="wiz-opt" onclick="wizSelect(3,'gt300',this)">大（＞300人）</div>
+        </div>
+        <div class="wiz-nav"><button class="btn-ghost btn-sm" onclick="wizBack(2)">← 返回</button><button class="btn btn-sm btn-amber" onclick="getRecommendation()">获取推荐 ✦</button><span class="wiz-prog">4 / 4</span></div>
+      </div>
+      <div class="wizard-step" id="ws-result">
+        <div class="rec-box" id="rec-content"></div>
+        <div style="margin-top:1rem"><button class="btn-ghost btn-sm" onclick="resetWizard()">重新评估</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════ ATTRIBUTES ════════════ -->
+<div id="attrs" class="sec">
+<div class="sec-hd">
+  <h2>各学科属性与水平参考库</h2>
+  <p>各领域 DCE 研究中常用属性与水平示例，可作为研究设计的参考起点。实际研究应结合文献综述、专家咨询、焦点小组进行调整。</p>
+</div>
+<div class="dtabs">
+  <div class="dtab active" onclick="showDTab2('health',this)">🏥 医疗卫生</div>
+  <div class="dtab" onclick="showDTab2('env',this)">🌿 环境经济</div>
+  <div class="dtab" onclick="showDTab2('transport',this)">🚌 交通运输</div>
+  <div class="dtab" onclick="showDTab2('market',this)">🛒 市场营销</div>
+  <div class="dtab" onclick="showDTab2('food',this)">🌾 农业食品</div>
+</div>
+<div id="dp2-health" class="dpanel active">
+  <div class="warn">典型研究方向：药物/治疗方案偏好、医疗服务模式选择、疫苗接种意愿、慢性病管理、健康保险设计</div><br>
+  <table class="attr-table"><thead><tr><th>属性</th><th>常用水平</th><th>备注</th></tr></thead><tbody>
+  <tr><td>治疗效果</td><td><div class="lvls"><span class="lpill">治愈率50%</span><span class="lpill">治愈率70%</span><span class="lpill">治愈率90%</span></div></td><td>用绝对风险降低表示，避免相对风险导致的偏误</td></tr>
+  <tr><td>副作用</td><td><div class="lvls"><span class="lpill">无</span><span class="lpill">轻度（恶心）</span><span class="lpill">中度（疲劳）</span><span class="lpill">严重（需住院）</span></div></td><td>可用发生概率代替等级描述，更具体</td></tr>
+  <tr><td>治疗费用</td><td><div class="lvls"><span class="lpill">200元/月</span><span class="lpill">500元/月</span><span class="lpill">1000元/月</span><span class="lpill">2000元/月</span></div></td><td>WTP 计算必须包含的货币属性</td></tr>
+  <tr><td>就医便利性</td><td><div class="lvls"><span class="lpill">家庭自测</span><span class="lpill">社区诊所</span><span class="lpill">综合医院</span></div></td><td>远程医疗研究的核心属性</td></tr>
+  <tr><td>给药方式</td><td><div class="lvls"><span class="lpill">口服</span><span class="lpill">皮下注射</span><span class="lpill">静脉输液</span></div></td><td>直接影响患者依从性</td></tr>
+  <tr><td>等待时间</td><td><div class="lvls"><span class="lpill">当天</span><span class="lpill">1周</span><span class="lpill">1个月</span><span class="lpill">3个月</span></div></td><td>医疗可及性研究常用</td></tr>
+  <tr><td>医生资质</td><td><div class="lvls"><span class="lpill">全科医生</span><span class="lpill">专科医生</span><span class="lpill">专家教授</span></div></td><td>可进一步区分年资和职称</td></tr>
+  </tbody></table>
+</div>
+<div id="dp2-env" class="dpanel">
+  <div class="warn">典型研究方向：环境政策评估、生态系统服务定价、碳税接受度、可再生能源选择、饮用水质量改善</div><br>
+  <table class="attr-table"><thead><tr><th>属性</th><th>常用水平</th><th>备注</th></tr></thead><tbody>
+  <tr><td>空气质量</td><td><div class="lvls"><span class="lpill">AQI 50（优）</span><span class="lpill">AQI 100（良）</span><span class="lpill">AQI 150（轻度）</span><span class="lpill">AQI 200（中度）</span></div></td><td>PM2.5浓度值更易被受访者理解</td></tr>
+  <tr><td>碳排放削减量</td><td><div class="lvls"><span class="lpill">5%</span><span class="lpill">15%</span><span class="lpill">30%</span><span class="lpill">50%</span></div></td><td>相对于基准年的削减比例</td></tr>
+  <tr><td>政策年费</td><td><div class="lvls"><span class="lpill">50元/年</span><span class="lpill">150元/年</span><span class="lpill">300元/年</span><span class="lpill">600元/年</span></div></td><td>以家庭额外税收方式呈现</td></tr>
+  <tr><td>生物多样性</td><td><div class="lvls"><span class="lpill">物种减少20%</span><span class="lpill">维持现状</span><span class="lpill">物种增加15%</span></div></td><td>可用濒危物种数量表示</td></tr>
+  <tr><td>水质达标率</td><td><div class="lvls"><span class="lpill">60%</span><span class="lpill">75%</span><span class="lpill">90%</span><span class="lpill">100%</span></div></td><td>饮用水和地表水均适用</td></tr>
+  <tr><td>政策实施主体</td><td><div class="lvls"><span class="lpill">地方政府</span><span class="lpill">中央政府</span><span class="lpill">企业自愿</span><span class="lpill">国际协议</span></div></td><td>研究制度信任与政策接受度</td></tr>
+  </tbody></table>
+</div>
+<div id="dp2-transport" class="dpanel">
+  <div class="warn">典型研究方向：出行方式选择、公交改善方案、电动汽车采购、共享出行、自动驾驶接受度</div><br>
+  <table class="attr-table"><thead><tr><th>属性</th><th>常用水平</th><th>备注</th></tr></thead><tbody>
+  <tr><td>出行时间</td><td><div class="lvls"><span class="lpill">10分钟</span><span class="lpill">20分钟</span><span class="lpill">30分钟</span><span class="lpill">45分钟</span><span class="lpill">60分钟</span></div></td><td>可进一步拆分为步行/候车/车内时间</td></tr>
+  <tr><td>出行费用</td><td><div class="lvls"><span class="lpill">2元</span><span class="lpill">5元</span><span class="lpill">10元</span><span class="lpill">20元</span></div></td><td>单程费用，需明确是否含停车</td></tr>
+  <tr><td>准时率</td><td><div class="lvls"><span class="lpill">70%</span><span class="lpill">80%</span><span class="lpill">90%</span><span class="lpill">99%</span></div></td><td>或以平均晚点分钟数表示</td></tr>
+  <tr><td>舒适度</td><td><div class="lvls"><span class="lpill">拥挤（无座）</span><span class="lpill">一般（有座）</span><span class="lpill">宽敞舒适</span></div></td><td>候车环境、车内设施可进一步细化</td></tr>
+  <tr><td>安全性</td><td><div class="lvls"><span class="lpill">高于平均事故率</span><span class="lpill">平均水平</span><span class="lpill">低于平均事故率</span></div></td><td>每亿公里死亡人数等客观指标效度更高</td></tr>
+  <tr><td>碳排放</td><td><div class="lvls"><span class="lpill">高排放</span><span class="lpill">中排放</span><span class="lpill">零排放</span></div></td><td>量化为kgCO₂/km更具说服力</td></tr>
+  </tbody></table>
+</div>
+<div id="dp2-market" class="dpanel">
+  <div class="warn">典型研究方向：消费品偏好测量、品牌价值评估、新产品定价、服务质量研究、在线零售体验</div><br>
+  <table class="attr-table"><thead><tr><th>属性</th><th>常用水平</th><th>备注</th></tr></thead><tbody>
+  <tr><td>价格</td><td><div class="lvls"><span class="lpill">49元</span><span class="lpill">99元</span><span class="lpill">149元</span><span class="lpill">199元</span></div></td><td>必须纳入以计算WTP，设计时确保价格水平差异足够大</td></tr>
+  <tr><td>品牌</td><td><div class="lvls"><span class="lpill">知名国际品牌</span><span class="lpill">知名国内品牌</span><span class="lpill">自有品牌</span><span class="lpill">无品牌</span></div></td><td>具体品牌名称须注意法律风险，建议用描述性表述</td></tr>
+  <tr><td>产品质量</td><td><div class="lvls"><span class="lpill">基础款</span><span class="lpill">标准款</span><span class="lpill">高端款</span></div></td><td>用材质、工艺等具体指标描述更有效度</td></tr>
+  <tr><td>售后服务</td><td><div class="lvls"><span class="lpill">无售后</span><span class="lpill">1年保修</span><span class="lpill">3年保修+上门</span></div></td><td>服务业研究的核心属性</td></tr>
+  <tr><td>交货时间</td><td><div class="lvls"><span class="lpill">当日达</span><span class="lpill">次日达</span><span class="lpill">3–5天</span><span class="lpill">7天以上</span></div></td><td>电商物流偏好常用</td></tr>
+  <tr><td>环保包装</td><td><div class="lvls"><span class="lpill">普通包装</span><span class="lpill">可回收包装</span><span class="lpill">最简包装</span></div></td><td>绿色消费溢价研究</td></tr>
+  </tbody></table>
+</div>
+<div id="dp2-food" class="dpanel">
+  <div class="warn">典型研究方向：食品安全标签、有机食品溢价、转基因食品态度、动物福利、原产地标识效果</div><br>
+  <table class="attr-table"><thead><tr><th>属性</th><th>常用水平</th><th>备注</th></tr></thead><tbody>
+  <tr><td>价格</td><td><div class="lvls"><span class="lpill">4元/斤</span><span class="lpill">6元/斤</span><span class="lpill">9元/斤</span><span class="lpill">14元/斤</span></div></td><td>水平跨度应反映市场实际价格范围</td></tr>
+  <tr><td>有机认证</td><td><div class="lvls"><span class="lpill">无认证</span><span class="lpill">国内有机认证</span><span class="lpill">国际有机认证</span></div></td><td>第三方认证机构背书可提高可信度</td></tr>
+  <tr><td>产地来源</td><td><div class="lvls"><span class="lpill">本地</span><span class="lpill">国内其他省份</span><span class="lpill">进口</span></div></td><td>原产地标识（PDO/PGI）研究常用</td></tr>
+  <tr><td>农药残留</td><td><div class="lvls"><span class="lpill">低于标准值</span><span class="lpill">符合标准</span><span class="lpill">略超标准</span></div></td><td>用具体检测值（mg/kg）提升可信度</td></tr>
+  <tr><td>动物福利</td><td><div class="lvls"><span class="lpill">普通饲养</span><span class="lpill">改善饲养条件</span><span class="lpill">放养认证</span></div></td><td>畜牧产品偏好研究必选属性</td></tr>
+  <tr><td>营养声明</td><td><div class="lvls"><span class="lpill">无声明</span><span class="lpill">低盐低糖</span><span class="lpill">富含膳食纤维</span><span class="lpill">益生菌添加</span></div></td><td>功能性食品研究核心属性</td></tr>
+  </tbody></table>
+</div>
+</div>
+
+<!-- ════════════ DESIGN CODE ════════════ -->
+<div id="design" class="sec">
+<div class="sec-hd">
+  <h2>问卷设计 R 代码</h2>
+  <p>三种设计方法的完整代码，使用「研究设计工具→属性生成器」可根据你的属性自动定制代码。</p>
+</div>
+
+<h4 class="sub"><span class="badge bt">01</span> 正交设计 (Orthogonal Design)</h4>
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># 正交设计 — 以医疗卫生场景为例（3属性）
+library(DoE.base); library(support.CEs)
+
+attrs <- list(
+  treatment_effect = c("50%","70%","90%"),
+  side_effect      = c("无","轻度","中度"),
+  cost             = c("200元","500元","1000元","2000元")
+)
+lvls <- sapply(attrs, length)  # c(3,3,4)
+
+# 生成正交主效应阵
+orth <- oa.design(nlevels = lvls, randomize = FALSE)
+for(i in seq_along(attrs)) levels(orth[[i]]) <- attrs[[i]]
+names(orth) <- names(attrs)
+
+cat("正交设计（", nrow(orth), "行）:\n"); print(orth)
+# 相关性检验（应接近0）
+print(round(cor(data.matrix(orth)), 3))
+
+# 生成选择集（每组2个备选）
+cs <- rotation.design(attribute.names=attrs, nalternatives=2,
+  nblocks=1, row.renames=FALSE, randomize=TRUE, seed=42)
+print(cs)
+write.csv(orth, "orthogonal_design.csv", row.names=FALSE)
+</code></pre></div>
+
+<hr class="div">
+<h4 class="sub"><span class="badge bt">02</span> D-optimal 设计 (idefix)</h4>
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(idefix)
+
+attrs <- list(
+  treatment_effect = c("50%","70%","90%"),
+  side_effect      = c("无","轻度","中度"),
+  cost             = c("200元","500元","1000元","2000元"),
+  waiting_time     = c("1天","1周","1个月")
+)
+lvls   <- sapply(attrs, length)   # c(3,3,4,3)
+coding <- rep("E", length(lvls))  # 效应编码
+
+n_params <- sum(lvls - 1)         # 模型参数数
+cand_set <- Profiles(lvls=lvls, coding=coding)
+
+# ── 局部 D-optimal（零先验）──
+set.seed(2024)
+res <- CEA(lvls=lvls, coding=coding,
+  par.draws = rep(0, n_params),   # 零先验 → 不依赖任何估计
+  n.sets=12, n.alts=2,
+  cand.set=cand_set, n.start=12, best=TRUE)
+cat("D-error:", round(res$error, 6), "\n")
+
+design <- Decode(res$design, lvls, coding, attrs)
+print(design$design)
+
+# ── 贝叶斯 D-optimal（推荐，有先验时使用）──
+library(MASS)
+prior_mu  <- rep(0, n_params)
+prior_cov <- diag(0.5, n_params)
+draws     <- mvrnorm(500, prior_mu, prior_cov)  # 正式分析用1000+
+
+set.seed(2024)
+bres <- BCEA(lvls=lvls, coding=coding,
+  par.draws=draws, n.sets=12, n.alts=2,
+  cand.set=cand_set, n.start=6)
+cat("贝叶斯 D-error:", round(bres$error, 6), "\n")
+
+write.csv(Decode(bres$design,lvls,coding,attrs)$design,
+  "doptimal_design.csv", row.names=FALSE)
+</code></pre></div>
+
+<hr class="div">
+<h4 class="sub"><span class="badge ba">03</span> 最大化设计 (Federov Exchange)</h4>
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(AlgDesign)
+
+# 候选集（全因子空间）
+candidates <- expand.grid(
+  treatment_effect = c(50,70,90),
+  side_effect      = c(1,2,3),
+  cost             = c(200,500,1000,2000),
+  waiting_time     = c(1,7,30)
+)
+
+frml   <- ~ treatment_effect + side_effect + cost + waiting_time
+mm     <- model.matrix(frml, candidates)
+n_par  <- ncol(mm) - 1
+n_rows <- n_par * 4     # 设计行数 = 参数数 × 4
+
+set.seed(2024)
+opt <- optFederov(frml, data=candidates, nTrials=n_rows,
+  criterion="D", nRepeats=20, nullify=1)
+
+cat("D效率:", round(opt$Dea, 4), "\n")
+print(head(opt$design, 6))
+
+# 标签化 & 配对选择集
+d <- opt$design
+d$treatment_effect <- paste0(d$treatment_effect,"%")
+d$side_effect <- factor(d$side_effect,1:3,c("无","轻度","中度"))
+n_cs  <- floor(nrow(d)/2)
+d$choice_set  <- rep(1:n_cs, each=2)[1:nrow(d)]
+d$alternative <- rep(c("方案A","方案B"), n_cs)[1:nrow(d)]
+write.csv(d, "maximal_design.csv", row.names=FALSE)
+</code></pre></div>
+</div>
+
+<!-- ════════════ ANALYSIS CODE ════════════ -->
+<div id="analysis" class="sec">
+<div class="sec-hd">
+  <h2>数据分析 R 代码</h2>
+  <p>含数据准备、三种选择模型估计、IIA检验（进阶模式）及WTP置信区间计算。</p>
+</div>
+<div class="atabs">
+  <div class="atab active" onclick="showATab('a-prep',this)">数据准备</div>
+  <div class="atab" onclick="showATab('a-cl',this)">条件 Logit</div>
+  <div class="atab" onclick="showATab('a-mxl',this)">混合 Logit</div>
+  <div class="atab" onclick="showATab('a-lcm',this)">潜在类别</div>
+  <div class="atab" onclick="showATab('a-wtp',this)">WTP 计算</div>
+  <div class="atab" onclick="showATab('a-iia',this)">IIA 检验 <span class="adv-badge">进阶</span></div>
+</div>
+
+<div id="ap-a-prep" class="apanel active">
+<div class="note">输入格式要求：每行为一个选择任务 × 备选方案的组合（长格式）；含 <code style="font-family:var(--mono);font-size:11.5px">chosen</code> 变量（0/1）；同一受访者多个任务需有面板 ID。</div>
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(tidyverse); library(mlogit)
+
+# ── 读取数据（替换为你的文件路径）──
+# raw <- read.csv("your_data.csv")
+# 以下为模拟数据示例
+set.seed(42); n_resp=200; n_tasks=12
+raw <- expand.grid(respondent_id=1:n_resp, task_id=1:n_tasks) %>%
+  mutate(
+    cost_A=sample(c(200,500,1000,2000),n(),T),
+    effect_A=sample(c(50,70,90),n(),T),
+    side_A=sample(1:3,n(),T),
+    cost_B=sample(c(200,500,1000,2000),n(),T),
+    effect_B=sample(c(50,70,90),n(),T),
+    side_B=sample(1:3,n(),T),
+    choice=sample(1:2,n(),T)
+  )
+
+# ── 宽→长格式转换 ──
+long <- raw %>%
+  pivot_longer(matches("_(A|B)$"),
+    names_to=c(".value","alternative"), names_sep="_(?=[AB]$)") %>%
+  mutate(
+    chosen = as.integer((alternative=="A"&choice==1)|(alternative=="B"&choice==2)),
+    side   = factor(side,1:3,c("无","轻度","中度")),
+    respondent_id = factor(respondent_id)
+  ) %>% arrange(respondent_id, task_id, alternative)
+
+# ── 数据质量检验 ──
+chk <- long %>% group_by(respondent_id,task_id) %>%
+  summarise(n=sum(chosen),.groups="drop")
+cat("每任务被选数分布（应全为1）:\n"); print(table(chk$n))
+cat("缺失值:\n"); print(colSums(is.na(long)))
+
+# ── 转为 mlogit 格式 ──
+md <- mlogit.data(long, choice="chosen", shape="long",
+  alt.var="alternative", id.var="respondent_id", chid.var="task_id")
+save(long, md, file="dce_data.RData")
+cat("数据已保存（n=", n_resp, "人，", n_tasks, "任务/人）\n")
+</code></pre></div>
+</div>
+
+<div id="ap-a-cl" class="apanel">
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(mlogit); load("dce_data.RData")
+
+# ── 主效应模型 ──
+cl <- mlogit(chosen ~ cost + effect + side | 0, data=md)
+summary(cl)
+
+# 拟合指标
+ll_null  <- -nrow(md)/2*log(2)
+mcfadden <- 1 - as.numeric(cl$logLik)/ll_null
+cat("McFadden R²:", round(mcfadden,4), " AIC:", round(AIC(cl),2), "\n")
+
+# ── 系数置信区间 ──
+ci <- confint(cl)
+coef_df <- data.frame(coef(cl), ci) %>%
+  setNames(c("estimate","lower","upper")) %>%
+  mutate(sig = ifelse(lower>0|upper<0, "*", ""))
+print(round(coef_df,4))
+
+# ── 含交互项模型 & LR检验 ──
+cl_int <- mlogit(chosen ~ cost + effect + side + cost:effect | 0, data=md)
+print(lrtest(cl, cl_int))
+
+# ── 森林图 ──
+library(ggplot2)
+ggplot(coef_df %>% tibble::rownames_to_column("par"),
+  aes(estimate, reorder(par,estimate))) +
+  geom_vline(xintercept=0, linetype="dashed", color="gray60") +
+  geom_errorbarh(aes(xmin=lower,xmax=upper), height=.2, color="#1a6b5a", linewidth=.9) +
+  geom_point(size=3, color="#1a6b5a") +
+  theme_minimal(base_size=13) +
+  labs(title="条件Logit系数（95% CI）", x="效用系数", y="")
+ggsave("cl_coef.png", width=8, height=5, dpi=150)
+</code></pre></div>
+</div>
+
+<div id="ap-a-mxl" class="apanel">
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(mlogit); load("dce_data.RData")
+
+# ── 混合 Logit（独立正态随机参数）──
+cat("估计中（约2–5分钟）...\n")
+mxl <- mlogit(chosen ~ cost + effect + side | 0,
+  data=md, panel=TRUE,
+  rpar=c(cost="n", effect="n", side轻度="n", side中度="n"),
+  R=500, seed=42, halton=NA, correlation=FALSE)
+summary(mxl)
+
+# 均值与标准差
+b <- coef(mxl)
+cat("参数均值:\n"); print(round(b[!grepl("^sd\\.",names(b))],4))
+cat("参数标准差:\n"); print(round(abs(b[grepl("^sd\\.",names(b))]),4))
+
+# ── 含相关结构 MXL（进阶）──
+mxl_c <- mlogit(chosen ~ cost + effect + side | 0,
+  data=md, panel=TRUE,
+  rpar=c(cost="n",effect="n",side轻度="n",side中度="n"),
+  R=500, seed=42, correlation=TRUE)
+cat("相关矩阵:\n"); print(round(cov2cor(cov.mlogit(mxl_c)),3))
+
+# ── 模型比较 ──
+cat("\nAIC对比  CL:", round(AIC(cl),2),
+  " MXL:", round(AIC(mxl),2),
+  " MXL(相关):", round(AIC(mxl_c),2), "\n")
+
+# ── 个体条件参数可视化 ──
+ind <- as.data.frame(fitted(mxl, type="parameters"))
+library(ggplot2)
+ggplot(ind, aes(cost)) +
+  geom_histogram(bins=30, fill="#1a6b5a", alpha=.75, color="white") +
+  theme_minimal(base_size=13) +
+  labs(title="费用参数个体分布（条件期望）", x="费用系数估计值", y="频次")
+</code></pre></div>
+</div>
+
+<div id="ap-a-lcm" class="apanel">
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(gmnl); load("dce_data.RData")
+
+# ── Step 1: BIC 选择最优类别数 ──
+bic_df <- data.frame()
+for(k in 2:5){
+  m <- tryCatch(gmnl(chosen~cost+effect+side|0|0|0|1, data=md,
+    model="lc", Q=k, panel=TRUE, method="bhhh",
+    iterlim=500, print.level=0), error=function(e) NULL)
+  if(!is.null(m)){
+    n_par <- length(coef(m)); n_obs <- length(unique(md$id))
+    bic_df <- rbind(bic_df, data.frame(k=k, LL=as.numeric(logLik(m)),
+      AIC=-2*logLik(m)+2*n_par, BIC=-2*logLik(m)+log(n_obs)*n_par))
+  }
+}
+print(round(bic_df,2)); best_k <- bic_df$k[which.min(bic_df$BIC)]
+cat("最优类别数:", best_k,"\n")
+
+# ── Step 2: 估计最优模型 ──
+set.seed(42)
+lcm <- gmnl(chosen~cost+effect+side|0|0|0|1, data=md,
+  model="lc", Q=best_k, panel=TRUE, method="bhhh", iterlim=500)
+summary(lcm)
+
+# ── Step 3: 类别规模 & WTP ──
+cp <- colMeans(lcm$prob.class)
+cat("各类别占比:\n"); print(round(cp,3))
+
+# 各类别WTP
+bc <- matrix(coef(lcm)[!grepl("^class",names(coef(lcm)))], ncol=best_k)
+rownames(bc) <- c("cost","effect","side轻度","side中度")
+wtp <- apply(bc,2, function(b) -b/b["cost"])
+cat("各类别WTP（元/月）:\n"); print(round(wtp[-1,],2))
+
+# ── Step 4: 可视化 ──
+library(ggplot2)
+df <- as.data.frame(t(bc)) %>% mutate(Class=paste0("Class ",1:best_k)) %>%
+  tidyr::pivot_longer(-Class, names_to="attr", values_to="util")
+ggplot(df, aes(attr,util,fill=Class)) +
+  geom_col(position="dodge", alpha=.85) +
+  geom_hline(yintercept=0, linewidth=.5) +
+  scale_fill_manual(values=c("#1a6b5a","#c4832a","#3b5fa0","#7b3a8c")) +
+  theme_minimal(base_size=13) +
+  labs(title="各潜在类别效用系数", x="属性", y="系数值", fill="类别")
+</code></pre></div>
+</div>
+
+<div id="ap-a-wtp" class="apanel">
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(mlogit); library(MASS); library(ggplot2); load("dce_data.RData")
+
+cl <- mlogit(chosen~cost+effect+side|0, data=md)
+b  <- coef(cl); bc <- b["cost"]
+
+# ── 点估计 ──
+wtp_pt <- c(
+  `效果+1%`   = -b["effect"]/bc,
+  `副作用:轻度` = -b["side轻度"]/bc,
+  `副作用:中度` = -b["side中度"]/bc
+)
+cat("WTP 点估计（元/月）:\n"); print(round(wtp_pt,2))
+
+# ── Krinsky-Robb 置信区间（10000次参数Bootstrap）──
+set.seed(2024)
+draws <- mvrnorm(10000, coef(cl), vcov(cl))
+wtp_d <- data.frame(
+  effect = -draws[,"effect"] / draws[,"cost"],
+  side_l = -draws[,"side轻度"]  / draws[,"cost"],
+  side_m = -draws[,"side中度"]  / draws[,"cost"]
+)
+# 截尾去极端值（Poe et al.）
+for(v in names(wtp_d))
+  wtp_d[[v]] <- ifelse(between(wtp_d[[v]],
+    quantile(wtp_d[[v]],.005), quantile(wtp_d[[v]],.995)), wtp_d[[v]], NA)
+
+ci_tab <- data.frame(
+  attribute = c("效果提升1%","轻度副作用 vs 无","中度副作用 vs 无"),
+  mean  = colMeans(wtp_d, na.rm=TRUE),
+  lower = apply(wtp_d, 2, quantile, .025, na.rm=TRUE),
+  upper = apply(wtp_d, 2, quantile, .975, na.rm=TRUE)
+)
+cat("\nWTP 95% CI（元/月）:\n")
+print(ci_tab %>% mutate(label=sprintf("%.1f (%.1f, %.1f)", mean,lower,upper)))
+
+# ── 森林图 ──
+ggplot(ci_tab, aes(mean, reorder(attribute,mean))) +
+  geom_vline(xintercept=0, linetype="dashed", color="gray55") +
+  geom_errorbarh(aes(xmin=lower,xmax=upper), height=.22,
+    color="#1a6b5a", linewidth=1.1) +
+  geom_point(size=4, color="#1a6b5a") +
+  geom_text(aes(label=sprintf("%.0f元",mean)), hjust=-.2, size=3.5, color="#1a6b5a") +
+  scale_x_continuous(expand=expansion(mult=c(.05,.3))) +
+  theme_minimal(base_size=13) +
+  labs(title="支付意愿估计（Krinsky-Robb，95% CI）",
+    x="WTP（元/月）", y="")
+ggsave("wtp_forest.png", width=9, height=4.5, dpi=150)
+</code></pre></div>
+</div>
+
+<div id="ap-a-iia" class="apanel">
+<div class="note adv-only"><strong>IIA 假设</strong>（<span data-tip="iia">无关选项独立性</span>）是条件 Logit 的核心约束，若违反则应改用 MXL 或 NL 模型。</div>
+<div class="code-wrap"><button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r">library(mlogit); load("dce_data.RData")
+
+# ── Hausman-McFadden IIA 检验 ──
+# 前提：设计中至少有3个备选方案
+# 完整模型（含所有备选）
+full_model <- mlogit(chosen ~ cost + effect + side | 0, data=md)
+
+# 限制模型（去掉一个备选方案）
+# 注：需要设计中有第3个选项 "C"（如"都不选"）
+md_restricted <- md[md$alt != "C", ]
+rest_model <- mlogit(chosen ~ cost + effect + side | 0,
+  data=md_restricted)
+
+# HMF 检验（p > 0.05 → 不拒绝 IIA，CL 合理）
+htest <- hmftest(full_model, rest_model)
+cat("Hausman-McFadden IIA 检验:\n"); print(htest)
+cat("p值:", round(htest$p.value, 4), "\n")
+cat(ifelse(htest$p.value > 0.05,
+  "✓ 不拒绝 IIA（p > 0.05），条件Logit 假设合理",
+  "✗ 拒绝 IIA（p < 0.05），建议改用混合Logit或嵌套Logit"), "\n")
+
+# ── 嵌套 Logit 作为 IIA 替代（进阶）──
+# 当 IIA 被拒绝时，将备选方案分组为嵌套结构
+nl_model <- mlogit(chosen ~ cost + effect + side | 0, data=md,
+  nests=list(
+    medical = c("A","B"),    # 积极治疗方案
+    passive = c("C")         # 不治疗/等待
+  ),
+  un.nest.el = TRUE  # 估计嵌套相关参数 λ
+)
+summary(nl_model)
+# λ = 1 → 等同于MNL；λ < 1 → 嵌套内备选相关
+</code></pre></div>
+</div>
+</div>
+
+<!-- ════════════ PRACTICAL TOOLS ════════════ -->
+<div id="tools-prac" class="sec">
+<div class="sec-hd">
+  <h2>实用工具</h2>
+  <p>数据模拟器可在无真实数据时测试分析代码；问卷排版生成器可快速预览选择集布局。</p>
+</div>
+<div class="dtabs">
+  <div class="dtab active" onclick="showDTab3('sim',this)">🔬 数据模拟器</div>
+  <div class="dtab" onclick="showDTab3('qgen',this)">📄 问卷排版生成器</div>
+</div>
+
+<div id="dp3-sim" class="dpanel active">
+  <div class="tool-panel">
+    <h3>🔬 DCE 模拟数据生成器</h3>
+    <p>根据指定参数生成符合多项 Logit 的模拟数据集，可直接用于测试分析代码。</p>
+    <div class="grid2" style="margin-bottom:1rem">
+      <div>
+        <div class="form-row"><label>受访者人数</label><input type="number" id="sim-n" value="200" min="50" max="2000"></div>
+        <div class="form-row"><label>每人任务数</label><input type="number" id="sim-tasks" value="12" min="4" max="30"></div>
+        <div class="form-row"><label>每组选项数</label><select id="sim-alts"><option value="2" selected>2</option><option value="3">3</option></select></div>
+      </div>
+      <div class="warn" style="margin:0;height:fit-content">模拟基于<b>真实参数</b>（β 系数）加 Gumbel 噪声生成选择，可用于验证模型能否还原真实参数。</div>
+    </div>
+    <h4 class="sub">属性与真实参数（β 系数）</h4>
+    <div id="sim-attrs-wrap">
+      <div class="sim-attr-row">
+        <div><label>属性名</label><input value="cost" id="sa-name-0" oninput="syncSimAttr()"></div>
+        <div><label>水平（逗号分隔）</label><input value="200,500,1000,2000" id="sa-levels-0" oninput="syncSimAttr()"></div>
+        <div><label>β 系数（逗号分隔）</label><input value="-0.5,-0.9,-1.4,-2.0" id="sa-betas-0" oninput="syncSimAttr()"></div>
+      </div>
+      <div class="sim-attr-row">
+        <div><label>属性名</label><input value="effect" id="sa-name-1" oninput="syncSimAttr()"></div>
+        <div><label>水平</label><input value="50,70,90" id="sa-levels-1" oninput="syncSimAttr()"></div>
+        <div><label>β 系数</label><input value="0.3,0.8,1.2" id="sa-betas-1" oninput="syncSimAttr()"></div>
+      </div>
+      <div class="sim-attr-row">
+        <div><label>属性名</label><input value="side_effect" id="sa-name-2" oninput="syncSimAttr()"></div>
+        <div><label>水平</label><input value="无,轻度,中度" id="sa-levels-2" oninput="syncSimAttr()"></div>
+        <div><label>β 系数</label><input value="0.9,0.3,-0.4" id="sa-betas-2" oninput="syncSimAttr()"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.75rem;align-items:center;margin-top:.875rem;flex-wrap:wrap">
+      <button class="btn" onclick="runSim()">▶ 生成模拟数据</button>
+      <a id="sim-dl" class="dl-btn" style="display:none">⬇ 下载 CSV</a>
+      <span id="sim-info" style="font-size:12.5px;color:var(--txt2)"></span>
+    </div>
+    <div id="sim-preview" style="display:none;margin-top:1rem">
+      <h4 class="sub">数据预览（前10行）</h4>
+      <div style="overflow-x:auto;background:#fafaf8;border:1px solid var(--bdr);border-radius:8px;padding:.75rem">
+        <table class="qs-table" id="sim-table" style="font-size:11.5px"></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dp3-qgen" class="dpanel">
+  <div class="tool-panel">
+    <h3>📄 问卷排版生成器</h3>
+    <p>根据属性设置，生成可直接复制到问卷工具的选择任务 HTML 排版。</p>
+    <div class="form-row">
+      <label>选项数量</label>
+      <select id="qg-alts"><option value="2" selected>2个方案</option><option value="3">3个方案（含"都不选"）</option></select>
+      <label style="margin-left:.5rem">生成任务数</label>
+      <input type="number" id="qg-tasks" value="3" min="1" max="16" style="width:70px">
+      <button class="btn btn-sm" onclick="genQuestionnaire()">生成排版</button>
+    </div>
+    <div id="qg-output-wrap" style="display:none">
+      <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:.75rem">
+        <button class="btn-ghost btn-sm" onclick="copyQuestionnaire()">复制 HTML</button>
+        <span style="font-size:12px;color:var(--txt3)">可粘贴至问卷星、Qualtrics 等工具的 HTML 编辑器中</span>
+      </div>
+      <div id="qg-output" class="qs-output"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════ MODEL COMPARISON ════════════ -->
+<div id="compare" class="sec">
+<div class="sec-hd">
+  <h2>DCE 模型横向对比</h2>
+  <p>三种主流选择模型的假设、适用场景与技术特征对比，帮助选择合适的分析方法。</p>
+</div>
+<div style="overflow-x:auto">
+<table class="cmp-table">
+<thead><tr><th>特征维度</th><th>条件 Logit (CL)</th><th>混合 Logit (MXL)</th><th>潜在类别 (LCM)</th></tr></thead>
+<tbody>
+<tr><td>偏好异质性</td><td><span class="x">✗ 不允许</span>（参数固定）</td><td><span class="chk">✓ 连续分布</span>（个体随机效应）</td><td><span class="chk">✓ 离散分群</span>（类别固定参数）</td></tr>
+<tr><td>IIA 假设</td><td><span class="x">✗ 严格满足</span></td><td><span class="chk">✓ 自动放松</span></td><td><span class="chk">✓ 类内放松</span></td></tr>
+<tr><td>参数解释</td><td>简单直观，一组系数</td><td>均值 + 标准差，需解读分布</td><td>各类别独立参数，直观但需解释类别</td></tr>
+<tr><td>计算复杂度</td><td><span class="chk">低</span>（闭合式解）</td><td><span class="x">高</span>（模拟最大似然 MSLE）</td><td><span class="mid">中</span>（EM 算法迭代）</td></tr>
+<tr><td>适用场景</td><td>初步探索，偏好同质性假设合理时</td><td>推荐方法，允许个体偏好差异</td><td>存在明显偏好分群（如市场细分）</td></tr>
+<tr><td>最小样本量</td><td>~100人</td><td>~300–500人</td><td>~400–600人</td></tr>
+<tr><td>主要 R 包</td><td><code style="font-family:var(--mono);font-size:11.5px">mlogit</code></td><td><code style="font-family:var(--mono);font-size:11.5px">mlogit, apollo</code></td><td><code style="font-family:var(--mono);font-size:11.5px">gmnl, flexmix</code></td></tr>
+<tr><td>WTP 计算</td><td><span class="chk">✓ 直接计算</span></td><td><span class="chk">✓ 分布估计</span></td><td><span class="chk">✓ 分类别计算</span></td></tr>
+<tr><td>主要限制</td><td>IIA 限制，不能捕捉异质性</td><td>需假设参数分布形式，对数正态处理符号问题</td><td>类别数选择主观，类别含义需解释</td></tr>
+<tr><td>文献使用频率</td><td>高（简单研究）</td><td><span class="chk">最高</span>（方法论首选）</td><td>中（市场/政策分析）</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note" style="margin-top:1.25rem">
+  <strong>如何选择？</strong>若为初步探索或样本量有限，先用 CL 建立基准；若关心异质性估计，用 MXL；若关心市场细分或政策目标人群，考虑 LCM。建议先用 CL，再逐步扩展至更复杂模型，用 AIC/BIC 和 LR 检验比较模型拟合。
+</div>
+
+<hr class="div">
+<h4 class="sub">WTP 估计方法对比</h4>
+<div style="overflow-x:auto">
+<table class="cmp-table">
+<thead><tr><th>方法</th><th>Delta 法</th><th>Krinsky-Robb Bootstrap</th><th>贝叶斯 WTP 空间</th></tr></thead>
+<tbody>
+<tr><td>原理</td><td>一阶泰勒展开近似</td><td>参数联合正态分布抽样</td><td>直接在 WTP 空间估计模型</td></tr>
+<tr><td>计算量</td><td><span class="chk">低</span></td><td><span class="mid">中</span>（10000次抽样）</td><td><span class="x">高</span></td></tr>
+<tr><td>处理非线性</td><td><span class="mid">近似</span></td><td><span class="chk">准确</span></td><td><span class="chk">准确</span></td></tr>
+<tr><td>推荐情形</td><td>快速估计</td><td>正式报告（推荐）</td><td>MXL 模型的 WTP 分布</td></tr>
+<tr><td>R 实现</td><td><code style="font-family:var(--mono);font-size:11.5px">car::deltaMethod()</code></td><td><code style="font-family:var(--mono);font-size:11.5px">MASS::mvrnorm()</code></td><td><code style="font-family:var(--mono);font-size:11.5px">logitr 包</code></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ════════════ FAQ ════════════ -->
+<div id="faq" class="sec">
+<div class="sec-hd">
+  <h2>常见问题与排错指南</h2>
+  <p>整理了 DCE 分析中最频繁出现的报错、异常结果及其解决方案。</p>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 mlogit.data() 报错：格式识别失败</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>典型报错：</strong><pre>Error in mlogit.data: 'id' not found</pre>
+    <strong>原因：</strong>数据中缺少必要的标识变量，或变量名与参数不一致。<br><br>
+    <strong>解决方案：</strong><br>
+    1. 确认 <code>id.var</code> 参数指向的列确实存在且为因子类型。<br>
+    2. 确认 <code>choice</code> 变量为 0/1 整数，不是 TRUE/FALSE 逻辑值。<br>
+    3. 确认 <code>alt.var</code> 列中每个选择集内的备选方案名称一致（如都是 "A","B" 而非 "A","b"）。<br>
+    4. 每个受访者的每个任务必须恰好有1行 chosen=1，否则需重新清洗数据。
+    <pre>table(long %>% group_by(id,task) %>% summarise(n=sum(chosen),.groups="drop") %>% pull(n))</pre>
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 MXL 模型不收敛 / 迭代次数超限</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>典型表现：</strong>出现 <code>Warning: did not converge</code> 或迭代次数达到上限。<br><br>
+    <strong>解决方案：</strong><br>
+    1. 增加 Halton 序列抽样数：<code>R = 1000</code>（默认500），提高估计精度。<br>
+    2. 减少随机参数数量，从最重要的1–2个属性开始，逐步增加。<br>
+    3. 将部分参数从随机改为固定：<code>rpar = c(cost="n")</code>（只有cost随机）。<br>
+    4. 尝试不同优化算法：<code>method = "bfgs"</code> 或 <code>"nr"</code>。<br>
+    5. 若价格参数符号异常，改用对数正态：<code>cost = "ln"</code>（但需取负号）。
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 价格系数为正数（符号方向错误）</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>原因分析：</strong>这通常不是代码问题，而是数据或编码问题。<br><br>
+    <strong>检查步骤：</strong><br>
+    1. 确认 <code>chosen</code> 变量编码正确（1=选择该方案，0=未选择）。<br>
+    2. 检查价格变量是否为数值型而非因子型：<code>class(long$cost)</code>。<br>
+    3. 如果价格以对数形式输入（log(cost)），系数可能为负但绝对值更大。<br>
+    4. 检查是否存在数据逻辑错误：价格高的方案被系统性地多选（说明价格与质量混淆）。<br>
+    5. 如果确实正确但符号为正，说明受访者偏好高价格（奢侈品效应），需要在报告中特别讨论。
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 WTP 计算结果为 NA 或 Inf</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>原因：</strong>价格系数估计值接近0，导致 WTP = -β_attr / β_cost 出现除零问题。<br><br>
+    <strong>解决方案：</strong><br>
+    1. 检查价格属性的变异是否足够大（水平差距太小则无法准确估计）。<br>
+    2. 在 Krinsky-Robb Bootstrap 中，过滤掉 β_cost 接近0的抽样：
+    <pre>wtp_d$effect <- ifelse(abs(draws[,"cost"]) > 0.01,
+  -draws[,"effect"]/draws[,"cost"], NA)</pre>
+    3. 考虑改用 <code>logitr</code> 包直接在 WTP 空间估计，避免比值问题：
+    <pre>library(logitr)
+m <- logitr(data=long, outcome="chosen", obsID="task_id",
+  pars=c("effect","side"), scalePar="cost")</pre>
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 正交设计行数不足 / oa.design() 无法找到合适设计</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>典型报错：</strong><pre>Error: no orthogonal array found</pre>
+    <strong>原因：</strong>当属性和水平的组合不对应任何已知正交阵时报错。<br><br>
+    <strong>解决方案：</strong><br>
+    1. 调整水平数使其满足正交阵存在条件（如避免混合水平数 2×3×4）。<br>
+    2. 使用 <code>columns = "order"</code> 参数放宽约束：
+    <pre>oa.design(nlevels=lvls, columns="order")</pre>
+    3. 改用 D-optimal 设计，它不受正交阵存在性约束。<br>
+    4. 手动指定正交阵行数（接受部分属性混淆）：
+    <pre>oa.design(nlevels=lvls, nruns=18)</pre>
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 LCM 各类别系数接近，类别无实质差异</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>原因：</strong>样本中实际上偏好较为同质，或模型过拟合。<br><br>
+    <strong>解决方案：</strong><br>
+    1. 减少类别数（从 BIC 最优退一步尝试更少类别）。<br>
+    2. 增加样本量，LCM 至少需要 400 人才能稳定分群。<br>
+    3. 加入受访者特征变量（年龄、收入等）作为类别成员概率的协变量：
+    <pre>gmnl(chosen~cost+effect|0|0|0|age+income, model="lc", Q=k)</pre>
+    4. 考虑改用 MXL，其对样本量要求更低且更稳健。
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-q" onclick="toggleFaq(this)"><span>📌 混合 Logit 内存溢出 / 运行极慢</span><span class="arr">▾</span></div>
+  <div class="faq-a">
+    <strong>原因：</strong>当 R（抽样数）和样本量都很大时，模型需要存储和操作大型矩阵。<br><br>
+    <strong>解决方案：</strong><br>
+    1. 先用 R=200 快速验证代码，确认无误后再用 R=1000 正式估计。<br>
+    2. 使用 Halton 序列（<code>halton=NA</code>）代替随机抽样，同样 R 值下精度更高。<br>
+    3. 考虑改用 <code>apollo</code> 包，它支持并行计算：
+    <pre>library(apollo); apollo_control(nCores=4)</pre>
+    4. 在 64 位 R 中运行，并增大内存限制：<code>memory.limit(size=16000)</code>（Windows）。
+  </div>
+</div>
+</div>
+
+<!-- ════════════ REFS ════════════ -->
+<div id="refs" class="sec">
+<div class="sec-hd">
+  <h2>参考文献 & R 包</h2>
+  <p>DCE 领域核心方法论文献与实用 R 包资源。</p>
+</div>
+<div class="pkg-grid">
+  <div class="pkg-card"><h4>mlogit</h4><p>CL、MXL 估计，DCE 最常用包</p></div>
+  <div class="pkg-card"><h4>gmnl</h4><p>G-MNL、LCM 等广义多项Logit</p></div>
+  <div class="pkg-card"><h4>idefix</h4><p>D-optimal 和贝叶斯 D-optimal 设计</p></div>
+  <div class="pkg-card"><h4>AlgDesign</h4><p>Federov 算法，通用最优设计</p></div>
+  <div class="pkg-card"><h4>DoE.base</h4><p>正交阵生成工具</p></div>
+  <div class="pkg-card"><h4>apollo</h4><p>高级 DCE 模型（并行计算，灵活效用函数）</p></div>
+  <div class="pkg-card"><h4>logitr</h4><p>WTP 空间直接估计</p></div>
+  <div class="pkg-card"><h4>support.CEs</h4><p>选择集设计与 WTP 计算辅助工具</p></div>
+</div>
+<hr class="div">
+<ul class="ref-list">
+  <li><div class="rnum">1</div><div class="rcont"><strong>Train K (2009).</strong> Discrete Choice Methods with Simulation (2nd ed.). Cambridge. ─ 混合 Logit 与模拟估计方法权威教材，作者网站免费下载。</div></li>
+  <li><div class="rnum">2</div><div class="rcont"><strong>Louviere JJ et al. (2000).</strong> Stated Choice Methods: Analysis and Applications. Cambridge. ─ DCE 方法论全面覆盖，设计与分析的经典参考。</div></li>
+  <li><div class="rnum">3</div><div class="rcont"><strong>Johnson FR et al. (2013).</strong> Constructing experimental designs for discrete-choice experiments. Value in Health, 16(1):3–13. ─ ISPOR 医疗 DCE 设计最佳实践指南。</div></li>
+  <li><div class="rnum">4</div><div class="rcont"><strong>Hauber AB et al. (2016).</strong> Statistical methods for DCE analysis: ISPOR Task Force Report. Value in Health, 19(4):300–315. ─ DCE 统计分析 ISPOR 最佳实践，含模型选择建议。</div></li>
+  <li><div class="rnum">5</div><div class="rcont"><strong>Lancsar E, Louviere J (2008).</strong> Conducting DCEs to inform healthcare decision making. PharmacoEconomics, 26(8):661–677. ─ 医疗 DCE 设计与分析实用指南。</div></li>
+  <li><div class="rnum">6</div><div class="rcont"><strong>Sandor Z, Wedel M (2001).</strong> Designing conjoint choice experiments using managers' prior beliefs. Journal of Marketing Research, 38(4):430–444. ─ 贝叶斯 D-optimal 设计理论基础。</div></li>
+  <li><div class="rnum">7</div><div class="rcont"><strong>Orme BK (2010).</strong> Getting Started with Conjoint Analysis (2nd ed.). Research Publishers. ─ 样本量规则（500c/ta 公式）的来源文献。</div></li>
+  <li><div class="rnum">8</div><div class="rcont"><strong>Fiebig DG et al. (2010).</strong> The generalized MNL model. Marketing Science, 29(3):393–421. ─ G-MNL 与规模异质性处理方法。</div></li>
+</ul>
+</div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+const SECTIONS = ['intro','tools-design','attrs','design','analysis','tools-prac','compare','faq','refs'];
+let visited = JSON.parse(localStorage.getItem('dce-v2-prog')||'[]');
+let isAdv = false;
+let attrId = 0;
+let wizAnswers = {};
+let genAttrs = [];
+
+// ══════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════
+function nav(el){
+  e.preventDefault?.();
+  const id = el.dataset.sec;
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  el.classList.add('active');
+  if(!visited.includes(id)){visited.push(id);localStorage.setItem('dce-v2-prog',JSON.stringify(visited));}
+  updateProgress(); window.scrollTo(0,0);
+}
+// override to handle event
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const id=this.dataset.sec;
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    this.classList.add('active');
+    if(!visited.includes(id)){visited.push(id);localStorage.setItem('dce-v2-prog',JSON.stringify(visited));}
+    updateProgress(); window.scrollTo(0,0);
+  });
+});
+
+function updateProgress(){
+  const pct = Math.round(visited.length/SECTIONS.length*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.querySelectorAll('nav a').forEach(a=>{
+    if(visited.includes(a.dataset.sec)) a.classList.add('visited');
+  });
+}
+updateProgress();
+
+// ══════════════════════════════════════════════
+//  MODE TOGGLE
+// ══════════════════════════════════════════════
+function toggleMode(){
+  isAdv=!isAdv;
+  document.body.classList.toggle('advanced',isAdv);
+  const btn=document.getElementById('mode-btn');
+  btn.textContent=isAdv?'切换新手':'切换进阶';
+  btn.classList.toggle('advanced',isAdv);
+  document.querySelector('.mode-bar span').textContent=isAdv?'进阶模式':'新手模式';
+}
+
+// ══════════════════════════════════════════════
+//  TABS (multiple tab groups)
+// ══════════════════════════════════════════════
+function showDTab(id,el){
+  document.querySelectorAll('#dp-attr-gen,#dp-sample-calc,#dp-method-rec').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#tools-design .dtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('dp-'+id)?.classList.add('active'); el.classList.add('active');
+}
+function showDTab2(id,el){
+  document.querySelectorAll('[id^="dp2-"]').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#attrs .dtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('dp2-'+id)?.classList.add('active'); el.classList.add('active');
+}
+function showDTab3(id,el){
+  document.querySelectorAll('[id^="dp3-"]').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#tools-prac .dtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('dp3-'+id)?.classList.add('active'); el.classList.add('active');
+}
+function showATab(id,el){
+  document.querySelectorAll('[id^="ap-"]').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('ap-'+id)?.classList.add('active'); el.classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+//  INTRO FLOW
+// ══════════════════════════════════════════════
+const flowData=[
+  {s:'确定研究问题',d:'明确研究目的（偏好排序/WTP估计/市场预测）、目标人群、决策场景。通常通过文献综述和专家访谈完成，是整个研究的基础。'},
+  {s:'选择属性与水平',d:'通过文献综述→专家咨询→定性访谈（焦点小组/认知访谈）→预实验的流程筛选属性。属性应具有政策相关性、可操作性，水平范围应覆盖实际决策空间。'},
+  {s:'实验设计',d:'选择合适的设计方法（正交/D-optimal/贝叶斯D-optimal），生成选择集组合。设计质量直接影响参数估计效率。建议使用「设计工具」中的推荐引擎选择方法。'},
+  {s:'问卷构建',d:'将设计矩阵转化为受访者可理解的视觉化选择任务。包括：属性描述标准化、水平标签设计、任务排版、理解性检验（dominant pair）。'},
+  {s:'数据收集',d:'可采用在线调查（成本低）、面对面访谈（质量高）或混合模式。注意：需包含受访者社会经济特征变量，用于后续异质性分析。'},
+  {s:'计量建模',d:'根据研究目的选择模型：初步分析用CL，关注异质性用MXL（推荐），关注分群用LCM。详见「模型对比」页面。使用「数据分析代码」页面的模板代码。'},
+  {s:'结果解释',d:'计算 WTP（用 Krinsky-Robb 法计算置信区间）、报告相对重要性（RIs）、进行亚组分析。按 ISPOR 指南撰写结果报告，注意区分统计显著性和实践意义。'}
+];
+document.querySelectorAll('.fn').forEach(n=>{
+  n.addEventListener('click',function(){
+    document.querySelectorAll('.fn').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+    const i=parseInt(this.dataset.flow);
+    document.getElementById('flow-desc').textContent=flowData[i].d;
+  });
+});
+
+// ══════════════════════════════════════════════
+//  ATTRIBUTE GENERATOR
+// ══════════════════════════════════════════════
+function addAttr(name='',levels=''){
+  const id=attrId++;
+  const row=document.createElement('div');
+  row.className='attr-row';
+  row.id='ar-'+id;
+  row.innerHTML=`<div><label>属性名（英文）</label><input id="an-${id}" value="${name}" placeholder="如: cost" oninput="updateGenCode()"></div>
+<div><label>水平（英文逗号分隔）</label><input id="al-${id}" value="${levels}" placeholder="如: 200,500,1000,2000" oninput="updateGenCode()"></div>
+<button class="rm" onclick="document.getElementById('ar-${id}').remove();updateGenCode()" title="删除">×</button>`;
+  document.getElementById('attr-rows').appendChild(row);
+  updateGenCode();
+}
+function loadPreset(){
+  document.getElementById('attr-rows').innerHTML='';
+  attrId=0;
+  [['cost','200,500,1000,2000'],['effect','50,70,90'],['side_effect','无,轻度,中度'],['waiting_time','1天,1周,1个月']].forEach(([n,l])=>addAttr(n,l));
+}
+function getAttrsFromForm(){
+  const rows=document.querySelectorAll('.attr-row');
+  const attrs=[];
+  rows.forEach(r=>{
+    const id=r.id.replace('ar-','');
+    const name=(document.getElementById('an-'+id)?.value||'').trim();
+    const lvls=(document.getElementById('al-'+id)?.value||'').split(',').map(s=>s.trim()).filter(Boolean);
+    if(name&&lvls.length>=2) attrs.push({name,levels:lvls});
+  });
+  genAttrs=attrs;
+  return attrs;
+}
+function updateGenCode(){
+  const attrs=getAttrsFromForm();
+  const method=document.getElementById('design-method')?.value||'doptimal';
+  const nAlts=document.getElementById('n-alts')?.value||'2';
+  const nSets=document.getElementById('n-sets')?.value||'12';
+  const wrap=document.getElementById('gen-code-wrap');
+  const ph=document.getElementById('gen-placeholder');
+  if(attrs.length<2){wrap.style.display='none';ph.style.display='block';return;}
+  wrap.style.display='block';ph.style.display='none';
+  const code=genCode(attrs,method,nAlts,nSets);
+  const el=document.getElementById('gen-code');
+  el.textContent=code;
+  if(window.Prism) Prism.highlightElement(el);
+}
+function genCode(attrs,method,nAlts,nSets){
+  const attrList=attrs.map(a=>`  ${a.name} = c(${a.levels.map(l=>`"${l}"`).join(',')})`).join(',\n');
+  const lvls=`c(${attrs.map(a=>a.levels.length).join(',')})`;
+  const nPar=attrs.reduce((s,a)=>s+(a.levels.length-1),0);
+  if(method==='orthogonal') return `library(DoE.base); library(support.CEs)\n\nattrs <- list(\n${attrList}\n)\nlvls <- sapply(attrs, length)  # ${lvls}\n\north <- oa.design(nlevels=lvls, randomize=FALSE)\nfor(i in seq_along(attrs)) levels(orth[[i]]) <- attrs[[i]]\nnames(orth) <- names(attrs)\ncat("正交设计（", nrow(orth), "行）:\\n"); print(orth)\n\n# 生成选择集（每组${nAlts}个备选，共${nSets}个任务）\ncs <- rotation.design(attribute.names=attrs, nalternatives=${nAlts},\n  nblocks=1, row.renames=FALSE, randomize=TRUE, seed=2024)\nprint(cs)\nwrite.csv(orth, "orthogonal_design.csv", row.names=FALSE)`;
+  if(method==='doptimal') return `library(idefix); library(MASS)\n\nattrs <- list(\n${attrList}\n)\nlvls   <- sapply(attrs, length)  # ${lvls}\ncoding <- rep("E", length(lvls))  # 效应编码\nn_par  <- ${nPar}                 # 模型参数数（水平数之和-属性数）\ncand   <- Profiles(lvls=lvls, coding=coding)\n\n# 局部 D-optimal（零先验）\nset.seed(2024)\nres <- CEA(lvls=lvls, coding=coding,\n  par.draws=rep(0, n_par), n.sets=${nSets}, n.alts=${nAlts},\n  cand.set=cand, n.start=12, best=TRUE)\ncat("D-error:", round(res$error, 6), "\\n")\ndesign <- Decode(res$design, lvls, coding, attrs)\nprint(design$design)\n\n# 贝叶斯 D-optimal（推荐：有先验时使用）\ndraws <- mvrnorm(500, rep(0,n_par), diag(0.5, n_par))\nset.seed(2024)\nbres <- BCEA(lvls=lvls, coding=coding,\n  par.draws=draws, n.sets=${nSets}, n.alts=${nAlts},\n  cand.set=cand, n.start=6)\ncat("贝叶斯 D-error:", round(bres$error, 6), "\\n")\nwrite.csv(Decode(bres$design,lvls,coding,attrs)$design,\n  "doptimal_design.csv", row.names=FALSE)`;
+  // maximal
+  const candDef=attrs.map(a=>`  ${a.name} = c(${a.levels.map(l=>`"${l}"`).join(',')})`).join(',\n');
+  const frmlVars=attrs.map(a=>a.name).join(' + ');
+  return `library(AlgDesign)\n\ncand <- expand.grid(\n${candDef}\n)\nfrml   <- ~ ${frmlVars}\nmm     <- model.matrix(frml, cand)\nn_rows <- (ncol(mm)-1) * 4  # 参数数 × 4\n\nset.seed(2024)\nopt <- optFederov(frml, data=cand, nTrials=n_rows,\n  criterion="D", nRepeats=20, nullify=1)\ncat("D效率:", round(opt$Dea, 4), "\\n")\nprint(head(opt$design))\n\n# 配对为选择集\nd     <- opt$design\nn_cs  <- floor(nrow(d)/2)\nd$choice_set  <- rep(1:n_cs, each=2)[1:nrow(d)]\nd$alternative <- rep(c(${Array.from({length:parseInt(nAlts)},(_,i)=>'"方案'+String.fromCharCode(65+i)+'"').join(',')}), n_cs)[1:nrow(d)]\nwrite.csv(d, "maximal_design.csv", row.names=FALSE)`;
+}
+
+// ══════════════════════════════════════════════
+//  SAMPLE SIZE CALCULATOR
+// ══════════════════════════════════════════════
+function calcSS(){
+  const t=parseInt(document.getElementById('ss-t')?.value)||12;
+  const a=parseInt(document.getElementById('ss-a')?.value)||2;
+  const c=parseInt(document.getElementById('ss-c')?.value)||4;
+  const model=document.getElementById('ss-model')?.value||'cl';
+  const orme=Math.ceil(500*c/(t*a));
+  const jo=Math.ceil(200*c/(t*a));
+  let mult=1;
+  if(model==='mxl') mult=1.5;
+  if(model==='lcm') mult=2.0;
+  const rec=Math.ceil(Math.max(orme,jo*mult)*1.25);
+  document.getElementById('ss-n').textContent=rec;
+  document.getElementById('ss-formula').textContent=`Orme法: ${orme}人 | J&O法: ${jo}人 | 含20%余量+模型调整`;
+  document.getElementById('ss-orme').textContent=orme;
+  document.getElementById('ss-jo').textContent=jo;
+  document.getElementById('ss-obs').textContent=(rec*t*a).toLocaleString();
+  document.getElementById('ss-tasks').textContent=(rec*t).toLocaleString();
+  document.getElementById('ss-detail').style.display='grid';
+}
+
+// ══════════════════════════════════════════════
+//  WIZARD RECOMMENDER
+// ══════════════════════════════════════════════
+function wizSelect(step,val,el){
+  document.querySelectorAll(`#ws-${step} .wiz-opt`).forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel'); wizAnswers[step]=val;
+}
+function wizNext(to){
+  document.querySelectorAll('.wizard-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ws-'+to)?.classList.add('active');
+}
+function wizBack(to){ wizNext(to); }
+function resetWizard(){ wizAnswers={}; document.querySelectorAll('.wiz-opt').forEach(o=>o.classList.remove('sel')); wizNext(0); }
+function getRecommendation(){
+  const {0:size,1:prior,2:domain,3:sample}=wizAnswers;
+  let method='D-optimal（默认推荐）',reason=[],pkg='idefix';
+  if(prior==='yes'){method='贝叶斯 D-optimal';reason.push('✓ 有先验参数，贝叶斯D-optimal可显著降低D-error');}
+  else reason.push('✓ 无先验，使用零先验D-optimal设计');
+  if(size==='small'){method=prior==='yes'?method:'正交设计';reason.push('✓ 属性水平较少，正交设计可行且更简单');pkg='DoE.base';}
+  if(size==='large') reason.push('✓ 属性较多，正交阵可能不存在，D-optimal必要');
+  if(domain==='health') reason.push('✓ 医疗领域 ISPOR 指南推荐 D-optimal 设计');
+  if(sample==='lt100'&&method!=='正交设计'){method='正交设计';reason.push('⚠ 样本量小，正交设计所需问题数更少，受访者负担更低');pkg='DoE.base';}
+  if(sample==='gt300') reason.push('✓ 样本量充足，可支持 D-optimal 和后续 MXL 估计');
+  const html=`<h4>推荐方法：${method}</h4>
+<p>主要 R 包：<code style="font-family:var(--mono);font-size:12px">${pkg}</code></p>
+<div class="rec-why"><p>${reason.map(r=>`${r}<br>`).join('')}</p></div>`;
+  document.getElementById('rec-content').innerHTML=html;
+  wizNext('result');
+}
+
+// ══════════════════════════════════════════════
+//  DATA SIMULATOR
+// ══════════════════════════════════════════════
+function getSimAttrs(){
+  const attrs=[];
+  let i=0;
+  while(document.getElementById('sa-name-'+i)){
+    const name=document.getElementById('sa-name-'+i).value.trim();
+    const levels=document.getElementById('sa-levels-'+i).value.split(',').map(s=>s.trim()).filter(Boolean);
+    const betas=document.getElementById('sa-betas-'+i).value.split(',').map(Number);
+    if(name&&levels.length) attrs.push({name,levels,betas:betas.length===levels.length?betas:levels.map(()=>0)});
+    i++;
+  }
+  return attrs;
+}
+function syncSimAttr(){}
+function runSim(){
+  const nResp=parseInt(document.getElementById('sim-n').value)||200;
+  const nTasks=parseInt(document.getElementById('sim-tasks').value)||12;
+  const nAlts=parseInt(document.getElementById('sim-alts').value)||2;
+  const attrs=getSimAttrs();
+  if(!attrs.length){alert('请先填写属性信息');return;}
+  const cols=['resp_id','task_id','alt_id',...attrs.map(a=>a.name),'chosen'];
+  const rows=[cols];
+  for(let r=1;r<=nResp;r++){
+    for(let t=1;t<=nTasks;t++){
+      const Vs=[],taskRows=[];
+      for(let a=1;a<=nAlts;a++){
+        const row=[r,t,a];
+        let V=0;
+        for(const attr of attrs){
+          const li=Math.floor(Math.random()*attr.levels.length);
+          row.push(attr.levels[li]);
+          V+=attr.betas[li]||0;
+        }
+        V+=-Math.log(-Math.log(Math.max(1e-10,Math.random())));
+        Vs.push(V); taskRows.push(row);
+      }
+      const chosen=Vs.indexOf(Math.max(...Vs));
+      taskRows.forEach((row,i)=>rows.push([...row,i===chosen?1:0]));
+    }
+  }
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const dlBtn=document.getElementById('sim-dl');
+  dlBtn.href=url; dlBtn.download='dce_simulated.csv'; dlBtn.style.display='inline-flex';
+  document.getElementById('sim-info').textContent=`已生成 ${nResp} 人 × ${nTasks} 任务 × ${nAlts} 选项 = ${nResp*nTasks*nAlts} 行`;
+  // preview
+  const preview=rows.slice(0,11);
+  const tbl=document.getElementById('sim-table');
+  tbl.innerHTML='<tr>'+preview[0].map(h=>`<th>${h}</th>`).join('')+'</tr>'+
+    preview.slice(1).map(r=>'<tr>'+r.map(c=>`<td>${c}</td>`).join('')+'</tr>').join('');
+  document.getElementById('sim-preview').style.display='block';
+}
+
+// ══════════════════════════════════════════════
+//  QUESTIONNAIRE GENERATOR
+// ══════════════════════════════════════════════
+function genQuestionnaire(){
+  const nAlts=parseInt(document.getElementById('qg-alts').value)||2;
+  const nTasks=parseInt(document.getElementById('qg-tasks').value)||3;
+  const attrs=genAttrs.length?genAttrs:getSimAttrs();
+  if(!attrs.length){alert('请先在「属性生成器」中添加属性');return;}
+  let html='';
+  for(let t=1;t<=nTasks;t++){
+    html+=`<div class="qs-task"><div class="task-num">选择任务 ${t} / ${nTasks}</div>`;
+    const alts=[];
+    for(let a=0;a<nAlts+(nAlts===3?0:0);a++){
+      const row=[];
+      for(const attr of attrs){
+        const li=Math.floor(Math.random()*attr.levels.length);
+        row.push(attr.levels[li]);
+      }
+      alts.push(row);
+    }
+    html+=`<table class="qs-table"><thead><tr><th>属性</th>${alts.map((_,i)=>`<th>方案 ${String.fromCharCode(65+i)}</th>`).join('')}${nAlts===3?'<th>都不选</th>':''}</tr></thead><tbody>`;
+    attrs.forEach((attr,ai)=>{
+      html+=`<tr><td><b>${attr.name}</b></td>${alts.map(a=>`<td>${a[ai]}</td>`).join('')}${nAlts===3?'<td>—</td>':''}</tr>`;
+    });
+    html+=`<tr><td><b>请选择</b></td>${alts.map((_,i)=>`<td><input type="radio" name="t${t}" value="${i+1}"></td>`).join('')}${nAlts===3?'<td><input type="radio" name="t'+t+'" value="none"></td>':''}</tr>`;
+    html+='</tbody></table></div>';
+  }
+  const out=document.getElementById('qg-output');
+  out.innerHTML=html;
+  document.getElementById('qg-output-wrap').style.display='block';
+}
+function copyQuestionnaire(){
+  const html=document.getElementById('qg-output').innerHTML;
+  navigator.clipboard.writeText(html).then(()=>alert('HTML 已复制到剪贴板'));
+}
+
+// ══════════════════════════════════════════════
+//  FAQ ACCORDION
+// ══════════════════════════════════════════════
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  item.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════
+//  COPY CODE
+// ══════════════════════════════════════════════
+function copyCode(btn){
+  const code=btn.nextElementSibling.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const o=btn.textContent; btn.textContent='已复制 ✓';
+    setTimeout(()=>btn.textContent=o,2000);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  TOOLTIPS
+// ══════════════════════════════════════════════
+const GLOSSARY={
+  'random-utility':'随机效用理论 (RUT)：假设个体总是选择效用最大的方案，效用由可观测部分 V 和随机误差 ε 组成。',
+  'wtp':'支付意愿 (Willingness to Pay)：受访者为获得某属性的变化愿意支付的最大金额，通过 WTP = -β_属性 / β_价格 计算。',
+  'iia':'无关选项独立性 (IIA)：条件Logit的关键假设，要求两个选项之间的选择概率比与其他选项无关。若假设不成立，应改用混合Logit。',
+  'mle':'最大似然估计 (MLE)：通过最大化观测数据出现概率的对数似然函数来估计参数，是离散选择模型的标准估计方法。',
+  'kr':'Krinsky-Robb 参数Bootstrap法：从参数的渐近联合正态分布中重复抽样，计算WTP的经验置信区间，比Delta法更准确处理非线性比值。',
+  'd-error':'D-error：信息矩阵行列式的倒数，是衡量实验设计效率的指标。D-error越小，参数估计越精确，标准误越小。'
+};
+const tipPop=document.getElementById('tip-pop');
+document.querySelectorAll('[data-tip]').forEach(el=>{
+  el.addEventListener('mouseenter',e=>{
+    const key=el.dataset.tip;
+    if(GLOSSARY[key]){
+      tipPop.textContent=GLOSSARY[key];
+      tipPop.classList.add('show');
+    }
+  });
+  el.addEventListener('mousemove',e=>{
+    let x=e.clientX+14, y=e.clientY-10;
+    if(x+270>window.innerWidth) x=e.clientX-280;
+    if(y+80>window.innerHeight) y=e.clientY-90;
+    tipPop.style.left=x+'px'; tipPop.style.top=y+'px';
+  });
+  el.addEventListener('mouseleave',()=>tipPop.classList.remove('show'));
+});
+
+// init sample size on load
+calcSS();
+</script>
+</body>
+</html>
