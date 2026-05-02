@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散选择实验 · 系统学习资源库</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: #e2ddd4;
+  --text: #1c1a16;
+  --text2: #5c5850;
+  --text3: #9c9790;
+  --accent: #1a6b5a;
+  --accent-light: #e6f4f0;
+  --accent2: #c4832a;
+  --accent2-light: #fdf3e3;
+  --code-bg: #1e2228;
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Noto Serif SC', serif;
+  --sans: 'Noto Sans SC', sans-serif;
+  --nav-w: 240px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.75; display: flex; min-height: 100vh; }
+
+/* NAV */
+nav {
+  width: var(--nav-w); min-width: var(--nav-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+  padding: 0 0 2rem;
+}
+.nav-brand {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.nav-brand h1 { font-family: var(--serif); font-size: 15px; line-height: 1.4; color: var(--text); font-weight: 600; }
+.nav-brand p { font-size: 11px; color: var(--text3); margin-top: 3px; letter-spacing: 0.05em; }
+.nav-section { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text3); padding: 1rem 1.25rem 0.4rem; }
+nav a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0.5rem 1.25rem;
+  font-size: 13.5px; color: var(--text2); text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+}
+nav a:hover { background: var(--bg); color: var(--text); }
+nav a.active { border-left-color: var(--accent); color: var(--accent); background: var(--accent-light); font-weight: 500; }
+nav a .icon { width: 16px; text-align: center; font-size: 13px; flex-shrink: 0; }
+nav a.sub { padding-left: 2.75rem; font-size: 12.5px; }
+
+/* MAIN */
+main { flex: 1; padding: 0; max-width: 860px; }
+.section { padding: 3rem 3rem 2rem; border-bottom: 1px solid var(--border); display: none; }
+.section.active { display: block; }
+.section-header { margin-bottom: 2rem; }
+.section-header h2 { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+.section-header p { color: var(--text2); font-size: 14px; line-height: 1.7; max-width: 600px; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+.badge-teal { background: var(--accent-light); color: var(--accent); }
+.badge-amber { background: var(--accent2-light); color: var(--accent2); }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+.card h3 { font-family: var(--serif); font-size: 16px; color: var(--text); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+.card p { font-size: 13.5px; color: var(--text2); line-height: 1.7; }
+.cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+
+/* DISCIPLINE TABS */
+.dtabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.dtab {
+  padding: 6px 16px; border-radius: 20px; font-size: 13px;
+  cursor: pointer; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text2); transition: all 0.15s;
+}
+.dtab:hover { border-color: var(--accent); color: var(--accent); }
+.dtab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.dpanel { display: none; }
+.dpanel.active { display: block; }
+.attr-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.attr-table th { background: var(--surface2); font-weight: 500; padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border); color: var(--text2); font-size: 12px; letter-spacing: 0.04em; }
+.attr-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.attr-table tr:last-child td { border-bottom: none; }
+.attr-table td:first-child { font-weight: 500; color: var(--text); white-space: nowrap; }
+.levels-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+.level-pill { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 12px; color: var(--text2); font-family: var(--mono); }
+.ref-box { background: var(--accent2-light); border: 1px solid #ecc97a; border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1rem; font-size: 12.5px; color: #6b4c12; }
+.ref-box strong { display: block; margin-bottom: 3px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent2); }
+
+/* CODE BLOCKS */
+.code-section { margin-bottom: 2rem; }
+.code-section h3 { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.code-section > p { font-size: 13.5px; color: var(--text2); margin-bottom: 1rem; line-height: 1.7; }
+.code-wrap { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid #2d333d; }
+.code-wrap pre { margin: 0; border-radius: 0; font-size: 12.5px; line-height: 1.65; max-height: 520px; overflow-y: auto; }
+.code-wrap pre code { font-family: var(--mono) !important; }
+.copy-btn {
+  position: absolute; top: 10px; right: 12px; z-index: 2;
+  background: #ffffff18; border: 1px solid #ffffff28;
+  color: #ccc; padding: 4px 10px; border-radius: 5px;
+  font-size: 11.5px; cursor: pointer; font-family: var(--sans);
+  transition: all 0.15s;
+}
+.copy-btn:hover { background: #ffffff2a; color: #fff; }
+.note-box { background: #f0f9f6; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 0.875rem 1.25rem; margin: 1rem 0; font-size: 13px; color: #1c4a40; }
+.note-box strong { font-weight: 500; }
+.step-list { list-style: none; counter-reset: steps; margin-bottom: 1.5rem; }
+.step-list li { counter-increment: steps; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 0.75rem; font-size: 13.5px; color: var(--text2); }
+.step-list li::before { content: counter(steps); min-width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+h4 { font-size: 14px; font-weight: 500; color: var(--text); margin: 1.25rem 0 0.5rem; }
+
+/* INTRO SECTION */
+.intro-hero { background: linear-gradient(135deg, var(--accent) 0%, #0f4d3c 100%); border-radius: 12px; padding: 2rem 2.5rem; margin-bottom: 2rem; color: white; }
+.intro-hero h2 { font-family: var(--serif); font-size: 22px; margin-bottom: 0.5rem; font-weight: 600; }
+.intro-hero p { font-size: 14px; opacity: 0.88; line-height: 1.7; max-width: 520px; }
+.flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 1.5rem 0; font-size: 13px; }
+.flow-node { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px; color: var(--text); font-weight: 500; }
+.flow-arrow { color: var(--text3); font-size: 16px; }
+.concept-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.concept-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+.concept-card .emoji { font-size: 20px; margin-bottom: 0.5rem; }
+.concept-card h4 { font-size: 13.5px; font-weight: 500; margin: 0 0 0.4rem; color: var(--text); }
+.concept-card p { font-size: 12.5px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+/* ANALYSIS TABS */
+.atabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; gap: 0; }
+.atab { padding: 8px 18px; font-size: 13.5px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+.atab:hover { color: var(--text); }
+.atab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.apanel { display: none; }
+.apanel.active { display: block; }
+
+/* REFERENCE */
+.ref-list { list-style: none; }
+.ref-list li { padding: 1rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: flex-start; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { min-width: 24px; height: 24px; background: var(--surface2); border-radius: 50%; font-size: 11px; font-weight: 600; color: var(--text2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.ref-content { font-size: 13px; line-height: 1.7; color: var(--text2); }
+.ref-content strong { color: var(--text); }
+.pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+.pkg-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.pkg-card h4 { font-family: var(--mono); font-size: 13.5px; color: var(--accent); margin-bottom: 0.4rem; }
+.pkg-card p { font-size: 12.5px; color: var(--text2); margin: 0; }
+
+@media (max-width: 720px) {
+  nav { display: none; }
+  .section { padding: 2rem 1.25rem; }
+  .cards-grid, .concept-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="nav-brand">
+    <h1>离散选择实验<br>系统学习资源库</h1>
+    <p>Discrete Choice Experiment</p>
+  </div>
+  <div class="nav-section">基础概念</div>
+  <a href="#" class="active" onclick="showSection('intro',this)"><span class="icon">📖</span> 什么是 DCE</a>
+  <div class="nav-section">属性与水平</div>
+  <a href="#" onclick="showSection('attrs',this)"><span class="icon">🏥</span> 各学科属性参考</a>
+  <div class="nav-section">R 语言代码</div>
+  <a href="#" onclick="showSection('design',this)"><span class="icon">⚙️</span> 问卷设计代码</a>
+  <a href="#" onclick="showSection('design',this)" class="sub" onclick="showSection('design',this)">正交设计</a>
+  <a href="#" onclick="showSection('design',this)" class="sub">最大化设计</a>
+  <a href="#" onclick="showSection('design',this)" class="sub">D-optimal 设计</a>
+  <a href="#" onclick="showSection('analysis',this)"><span class="icon">📊</span> 数据分析代码</a>
+  <a href="#" onclick="showSection('analysis',this)" class="sub">条件 Logit</a>
+  <a href="#" onclick="showSection('analysis',this)" class="sub">混合 Logit</a>
+  <a href="#" onclick="showSection('analysis',this)" class="sub">潜在类别</a>
+  <div class="nav-section">资源</div>
+  <a href="#" onclick="showSection('refs',this)"><span class="icon">📚</span> 参考文献 & 包</a>
+</nav>
+
+<main>
+
+<!-- ===== SECTION: INTRO ===== -->
+<div id="intro" class="section active">
+  <div class="intro-hero">
+    <h2>离散选择实验 (DCE)</h2>
+    <p>一种基于随机效用理论的偏好测量方法，通过构建假想情景让受访者在不同选项间进行权衡，从而量化属性相对重要性与支付意愿。</p>
+  </div>
+
+  <div class="section-header">
+    <h2>核心概念</h2>
+    <p>DCE 源于 Lancaster (1966) 消费者理论与 McFadden (1974) 随机效用理论，目前广泛应用于医疗、环境、交通等多个领域。</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="emoji">🎯</div>
+      <h4>属性 (Attribute)</h4>
+      <p>描述选项特征的维度，例如"治疗费用"、"副作用发生率"等。每个 DCE 通常含 4–8 个属性。</p>
+    </div>
+    <div class="concept-card">
+      <div class="emoji">📏</div>
+      <h4>水平 (Level)</h4>
+      <p>属性的具体取值，例如费用的水平为"100元、300元、500元"。每个属性通常设 2–5 个水平。</p>
+    </div>
+    <div class="concept-card">
+      <div class="emoji">📋</div>
+      <h4>选择集 (Choice Set)</h4>
+      <p>受访者在一次选择任务中面对的选项组合，通常由 2–3 个备选方案构成，每人回答 8–16 个选择集。</p>
+    </div>
+    <div class="concept-card">
+      <div class="emoji">🔧</div>
+      <h4>实验设计 (Design)</h4>
+      <p>决定属性水平如何组合成选择集的方案，常见方法包括正交设计、最大化设计和 D-optimal 设计。</p>
+    </div>
+    <div class="concept-card">
+      <div class="emoji">💰</div>
+      <h4>支付意愿 (WTP)</h4>
+      <p>受访者愿意为某属性水平变化支付的最大金额，通过效用参数估计计算得出。</p>
+    </div>
+    <div class="concept-card">
+      <div class="emoji">📈</div>
+      <h4>随机效用模型</h4>
+      <p>U = V + ε，其中 V 为可观测效用，ε 为误差项。不同误差分布假设对应不同模型形式。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ DCE 研究流程</h3>
+    <div class="flow">
+      <div class="flow-node">确定研究问题</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">选择属性与水平</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">实验设计</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">问卷构建</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">数据收集</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">计量建模</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">结果解释</div>
+    </div>
+    <p style="font-size:13px;color:var(--text2);">属性与水平的选择通常需结合文献综述、专家咨询、定性访谈（焦点小组）来完成，是整个研究的基础。</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <h3>📌 效用函数</h3>
+      <p style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:0.75rem;border-radius:6px;color:var(--text);line-height:2;">
+        V<sub>nij</sub> = β₁X₁ + β₂X₂ + ... + βₖXₖ<br>
+        P(i|C) = exp(V<sub>ni</sub>) / Σⱼ exp(V<sub>nj</sub>)
+      </p>
+      <p>β 系数代表属性对效用的边际贡献，通过最大似然估计得到。</p>
+    </div>
+    <div class="card">
+      <h3>📌 WTP 计算</h3>
+      <p style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:0.75rem;border-radius:6px;color:var(--text);line-height:2;">
+        WTP = −(β<sub>attribute</sub> / β<sub>cost</sub>)<br>
+        CI 通过 Krinsky-Robb 法或 Delta 法估计
+      </p>
+      <p>价格属性系数符号应为负，其他属性的 WTP 单位与价格单位一致。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION: ATTRIBUTES ===== -->
+<div id="attrs" class="section">
+  <div class="section-header">
+    <h2>各学科属性与水平参考</h2>
+    <p>以下按学科领域列出 DCE 研究中常用的属性与水平，可作为研究设计的参考起点。实际研究应结合具体背景进行调整。</p>
+  </div>
+
+  <div class="dtabs">
+    <div class="dtab active" onclick="showDTab('health',this)">🏥 医疗卫生</div>
+    <div class="dtab" onclick="showDTab('env',this)">🌿 环境经济</div>
+    <div class="dtab" onclick="showDTab('transport',this)">🚌 交通运输</div>
+    <div class="dtab" onclick="showDTab('market',this)">🛒 市场营销</div>
+    <div class="dtab" onclick="showDTab('food',this)">🌾 农业食品</div>
+  </div>
+
+  <!-- HEALTH -->
+  <div id="dp-health" class="dpanel active">
+    <div class="ref-box"><strong>典型研究方向</strong>药物/治疗方案偏好、医疗服务模式、疫苗接种意愿、慢性病管理、健康保险选择</div>
+    <br>
+    <table class="attr-table">
+      <thead><tr><th>属性</th><th>常用水平（示例）</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>治疗效果</td><td><div class="levels-wrap"><span class="level-pill">治愈率 50%</span><span class="level-pill">治愈率 70%</span><span class="level-pill">治愈率 90%</span></div></td><td>用绝对风险降低或相对风险表示</td></tr>
+        <tr><td>副作用</td><td><div class="levels-wrap"><span class="level-pill">无</span><span class="level-pill">轻度（恶心）</span><span class="level-pill">中度（疲劳）</span><span class="level-pill">严重（住院风险）</span></div></td><td>可用发生概率代替等级描述</td></tr>
+        <tr><td>治疗费用</td><td><div class="levels-wrap"><span class="level-pill">200元/月</span><span class="level-pill">500元/月</span><span class="level-pill">1000元/月</span><span class="level-pill">2000元/月</span></div></td><td>需明确是自付还是总费用</td></tr>
+        <tr><td>就医便利性</td><td><div class="levels-wrap"><span class="level-pill">家庭自测</span><span class="level-pill">社区诊所</span><span class="level-pill">综合医院</span></div></td><td>远程医疗研究中常见属性</td></tr>
+        <tr><td>给药方式</td><td><div class="levels-wrap"><span class="level-pill">口服</span><span class="level-pill">皮下注射</span><span class="level-pill">静脉输液</span></div></td><td>影响患者依从性的关键属性</td></tr>
+        <tr><td>等待时间</td><td><div class="levels-wrap"><span class="level-pill">当天</span><span class="level-pill">1周</span><span class="level-pill">1个月</span><span class="level-pill">3个月</span></div></td><td>医疗服务可及性研究常用</td></tr>
+        <tr><td>医生资质</td><td><div class="levels-wrap"><span class="level-pill">全科医生</span><span class="level-pill">专科医生</span><span class="level-pill">专家教授</span></div></td><td>可进一步区分年资和头衔</td></tr>
+        <tr><td>个人化程度</td><td><div class="levels-wrap"><span class="level-pill">标准方案</span><span class="level-pill">基因检测定制</span></div></td><td>精准医疗偏好研究常用</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ENV -->
+  <div id="dp-env" class="dpanel">
+    <div class="ref-box"><strong>典型研究方向</strong>环境政策评估、生态系统服务、碳排放权交易、可再生能源、饮用水质量、环境税费</div>
+    <br>
+    <table class="attr-table">
+      <thead><tr><th>属性</th><th>常用水平（示例）</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>空气质量</td><td><div class="levels-wrap"><span class="level-pill">AQI 50（优）</span><span class="level-pill">AQI 100（良）</span><span class="level-pill">AQI 150（轻度）</span><span class="level-pill">AQI 200（中度）</span></div></td><td>PM2.5 浓度也常用</td></tr>
+        <tr><td>生物多样性</td><td><div class="levels-wrap"><span class="level-pill">物种减少 20%</span><span class="level-pill">维持现状</span><span class="level-pill">物种增加 15%</span></div></td><td>可用濒危物种数量表示</td></tr>
+        <tr><td>碳排放削减量</td><td><div class="levels-wrap"><span class="level-pill">5%</span><span class="level-pill">15%</span><span class="level-pill">30%</span><span class="level-pill">50%</span></div></td><td>相对于基准年份的削减比例</td></tr>
+        <tr><td>政策费用</td><td><div class="levels-wrap"><span class="level-pill">50元/年</span><span class="level-pill">150元/年</span><span class="level-pill">300元/年</span><span class="level-pill">600元/年</span></div></td><td>通常以家庭年额外税收表示</td></tr>
+        <tr><td>水质达标率</td><td><div class="levels-wrap"><span class="level-pill">60%</span><span class="level-pill">75%</span><span class="level-pill">90%</span><span class="level-pill">100%</span></div></td><td>饮用水和地表水均常用</td></tr>
+        <tr><td>绿地面积</td><td><div class="levels-wrap"><span class="level-pill">减少 10%</span><span class="level-pill">维持现状</span><span class="level-pill">增加 20%</span><span class="level-pill">增加 40%</span></div></td><td>城市生态系统研究常用</td></tr>
+        <tr><td>政策实施主体</td><td><div class="levels-wrap"><span class="level-pill">地方政府</span><span class="level-pill">中央政府</span><span class="level-pill">企业自愿</span><span class="level-pill">国际协议</span></div></td><td>研究信任与接受度的重要属性</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TRANSPORT -->
+  <div id="dp-transport" class="dpanel">
+    <div class="ref-box"><strong>典型研究方向</strong>出行方式选择、公共交通改善、电动汽车采购、共享出行、航空服务、自动驾驶接受度</div>
+    <br>
+    <table class="attr-table">
+      <thead><tr><th>属性</th><th>常用水平（示例）</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>出行时间</td><td><div class="levels-wrap"><span class="level-pill">10分钟</span><span class="level-pill">20分钟</span><span class="level-pill">30分钟</span><span class="level-pill">45分钟</span><span class="level-pill">60分钟</span></div></td><td>可进一步拆分为步行/候车/车内时间</td></tr>
+        <tr><td>出行费用</td><td><div class="levels-wrap"><span class="level-pill">2元</span><span class="level-pill">5元</span><span class="level-pill">10元</span><span class="level-pill">20元</span></div></td><td>单程或月卡，明确标注</td></tr>
+        <tr><td>准时率/可靠性</td><td><div class="levels-wrap"><span class="level-pill">70%</span><span class="level-pill">80%</span><span class="level-pill">90%</span><span class="level-pill">99%</span></div></td><td>或以晚点频率表示</td></tr>
+        <tr><td>舒适度</td><td><div class="levels-wrap"><span class="level-pill">拥挤（无座）</span><span class="level-pill">一般（有座）</span><span class="level-pill">宽敞舒适</span></div></td><td>候车环境也可纳入</td></tr>
+        <tr><td>安全性</td><td><div class="levels-wrap"><span class="level-pill">高事故率</span><span class="level-pill">平均水平</span><span class="level-pill">低事故率</span></div></td><td>每亿公里死亡人数等客观指标更佳</td></tr>
+        <tr><td>碳排放</td><td><div class="levels-wrap"><span class="level-pill">高排放</span><span class="level-pill">中排放</span><span class="level-pill">零排放</span></div></td><td>kgCO₂/km 等量化指标可提升效度</td></tr>
+        <tr><td>换乘次数</td><td><div class="levels-wrap"><span class="level-pill">直达</span><span class="level-pill">换乘1次</span><span class="level-pill">换乘2次</span></div></td><td>多模式交通研究常见</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MARKET -->
+  <div id="dp-market" class="dpanel">
+    <div class="ref-box"><strong>典型研究方向</strong>消费品偏好、品牌价值评估、新产品定价、服务质量研究、在线零售体验、订阅产品</div>
+    <br>
+    <table class="attr-table">
+      <thead><tr><th>属性</th><th>常用水平（示例）</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>价格</td><td><div class="levels-wrap"><span class="level-pill">49元</span><span class="level-pill">99元</span><span class="level-pill">149元</span><span class="level-pill">199元</span></div></td><td>需包含在 WTP 计算中，必选属性</td></tr>
+        <tr><td>品牌</td><td><div class="levels-wrap"><span class="level-pill">知名国际品牌</span><span class="level-pill">知名国内品牌</span><span class="level-pill">自有品牌</span><span class="level-pill">无品牌</span></div></td><td>具体品牌名称须注意法律风险</td></tr>
+        <tr><td>产品质量</td><td><div class="levels-wrap"><span class="level-pill">基础款</span><span class="level-pill">标准款</span><span class="level-pill">高端款</span></div></td><td>可用材质、工艺等具体指标描述</td></tr>
+        <tr><td>售后服务</td><td><div class="levels-wrap"><span class="level-pill">无售后</span><span class="level-pill">1年保修</span><span class="level-pill">3年保修+上门</span></div></td><td>服务业研究的核心属性</td></tr>
+        <tr><td>包装/环保性</td><td><div class="levels-wrap"><span class="level-pill">普通包装</span><span class="level-pill">可回收包装</span><span class="level-pill">最简包装</span></div></td><td>绿色消费研究常用</td></tr>
+        <tr><td>购买渠道</td><td><div class="levels-wrap"><span class="level-pill">实体店</span><span class="level-pill">官方网站</span><span class="level-pill">第三方平台</span></div></td><td>全渠道零售偏好研究</td></tr>
+        <tr><td>交货时间</td><td><div class="levels-wrap"><span class="level-pill">当日达</span><span class="level-pill">次日达</span><span class="level-pill">3–5天</span><span class="level-pill">7天以上</span></div></td><td>电商物流服务偏好常用</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOD -->
+  <div id="dp-food" class="dpanel">
+    <div class="ref-box"><strong>典型研究方向</strong>食品安全标签、有机食品溢价、转基因食品、动物福利、原产地标志、功能性食品偏好</div>
+    <br>
+    <table class="attr-table">
+      <thead><tr><th>属性</th><th>常用水平（示例）</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>价格</td><td><div class="levels-wrap"><span class="level-pill">4元/斤</span><span class="level-pill">6元/斤</span><span class="level-pill">9元/斤</span><span class="level-pill">14元/斤</span></div></td><td>必须纳入以计算 WTP</td></tr>
+        <tr><td>有机认证</td><td><div class="levels-wrap"><span class="level-pill">无认证</span><span class="level-pill">国内有机认证</span><span class="level-pill">国际有机认证</span></div></td><td>是否有第三方认证机构背书</td></tr>
+        <tr><td>产地来源</td><td><div class="levels-wrap"><span class="level-pill">本地</span><span class="level-pill">国内其他省份</span><span class="level-pill">进口</span></div></td><td>原产地标识（PDO）研究常用</td></tr>
+        <tr><td>农药残留</td><td><div class="levels-wrap"><span class="level-pill">低于标准值</span><span class="level-pill">符合标准</span><span class="level-pill">略超标准</span></div></td><td>可用具体检测值提升可信度</td></tr>
+        <tr><td>包装方式</td><td><div class="levels-wrap"><span class="level-pill">散装</span><span class="level-pill">普通包装</span><span class="level-pill">可降解包装</span></div></td><td>与可持续消费态度相关</td></tr>
+        <tr><td>动物福利</td><td><div class="levels-wrap"><span class="level-pill">普通饲养</span><span class="level-pill">改善饲养条件</span><span class="level-pill">放养认证</span></div></td><td>畜牧产品偏好研究常用</td></tr>
+        <tr><td>营养健康声明</td><td><div class="levels-wrap"><span class="level-pill">无声明</span><span class="level-pill">低盐低糖</span><span class="level-pill">富含膳食纤维</span><span class="level-pill">益生菌添加</span></div></td><td>功能性食品研究常用</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SECTION: DESIGN ===== -->
+<div id="design" class="section">
+  <div class="section-header">
+    <h2>问卷设计 R 语言代码</h2>
+    <p>以下提供三种实验设计方法的完整 R 代码，以医疗卫生场景（3属性×3水平）为示例，可根据实际情况修改属性和水平。</p>
+  </div>
+
+  <div class="note-box">
+    <strong>通用准备：</strong>
+    在运行以下任何设计代码前，请先安装所需的 R 包：<br>
+    <code style="font-family:var(--mono);font-size:12px;">install.packages(c("AlgDesign", "DoE.base", "idefix", "support.CEs"))</code>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 1. ORTHOGONAL -->
+  <div class="code-section">
+    <h3><span class="badge badge-teal">01</span> 正交设计 (Orthogonal Design)</h3>
+    <p>正交设计确保属性之间相互正交（不相关），是 DCE 最传统、应用最广泛的设计方法。使用 <code style="font-family:var(--mono);font-size:12px;">DoE.base</code> 包和 <code style="font-family:var(--mono);font-size:12px;">support.CEs</code> 包实现。</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# DCE 正交实验设计
+# 场景：医疗卫生 - 治疗方案偏好研究
+# 属性：治疗效果(3)、副作用(3)、费用(4)
+# =============================================================
+
+library(DoE.base)
+library(support.CEs)
+
+# ---- Step 1: 定义属性与水平 ----
+# 属性名称与水平数目
+attr_levels <- c(
+  treatment_effect = 3,   # 水平：50%, 70%, 90%
+  side_effect      = 3,   # 水平：无, 轻度, 中度
+  cost             = 4    # 水平：200, 500, 1000, 2000元
+)
+
+# 生成全因子（全部可能组合）
+full_factorial <- expand.grid(
+  treatment_effect = c("50%", "70%", "90%"),
+  side_effect      = c("无", "轻度", "中度"),
+  cost             = c("200元", "500元", "1000元", "2000元")
+)
+cat("全因子总数:", nrow(full_factorial), "\n")  # 36个组合
+
+# ---- Step 2: 生成正交主效应计划 ----
+# oa.design 生成正交阵
+orth_design <- oa.design(
+  nlevels  = attr_levels,
+  columns  = "min3",    # 最小混杂列分配
+  replications = 1,
+  randomize    = FALSE
+)
+
+cat("\n正交设计方案（属性水平编码）:\n")
+print(orth_design)
+cat("正交设计行数:", nrow(orth_design), "\n")
+
+# ---- Step 3: 替换为实际水平标签 ----
+design_labeled <- orth_design
+levels(design_labeled$treatment_effect) <- c("50%", "70%", "90%")
+levels(design_labeled$side_effect)      <- c("无", "轻度", "中度")
+levels(design_labeled$cost)             <- c("200元", "500元", "1000元", "2000元")
+
+cat("\n实际标签正交设计:\n")
+print(design_labeled)
+
+# ---- Step 4: 构建选择集（使用 support.CEs 包）----
+# 将正交设计分组为选择集，每个选择集含2个备选方案
+n_alternatives <- 2   # 每个选择集中的选项数
+n_questions    <- 9   # 每位受访者回答的问题数
+
+# 生成选择集
+choice_sets <- rotation.design(
+  attribute.names = list(
+    treatment_effect = c("50%", "70%", "90%"),
+    side_effect      = c("无", "轻度", "中度"),
+    cost             = c("200元", "500元", "1000元", "2000元")
+  ),
+  nalternatives = n_alternatives,
+  nblocks       = 1,
+  row.renames   = FALSE,
+  randomize     = TRUE,
+  seed          = 42
+)
+
+cat("\n选择集设计:\n")
+print(choice_sets)
+
+# ---- Step 5: 检验正交性 ----
+# 检查属性间相关性（理想情况下应接近0）
+corr_check <- cor(data.matrix(design_labeled))
+cat("\n属性间相关矩阵（正交设计应接近单位矩阵）:\n")
+print(round(corr_check, 3))
+
+# ---- Step 6: 导出设计用于问卷制作 ----
+write.csv(design_labeled, "orthogonal_design.csv",
+          row.names = FALSE, fileEncoding = "UTF-8")
+cat("\n设计文件已保存至 orthogonal_design.csv\n")
+</code></pre>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 2. MAXIMAL -->
+  <div class="code-section">
+    <h3><span class="badge badge-teal">02</span> 最大化设计 (Maximal / Full Factorial Fractional Design)</h3>
+    <p>最大化设计在样本量约束下最大化信息效率，通过 <code style="font-family:var(--mono);font-size:12px;">AlgDesign</code> 包的 <code style="font-family:var(--mono);font-size:12px;">optFederov</code> 函数实现，适合属性水平较多、全因子不可行的情况。</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# DCE 最大化设计（Maximal / Federov Exchange Algorithm）
+# 适用于：寻找估计能力最优的分式因子设计
+# =============================================================
+
+library(AlgDesign)
+
+# ---- Step 1: 构建候选集（全因子空间）----
+treatment_effect <- c(50, 70, 90)      # 治愈率 (%)
+side_effect      <- c(1, 2, 3)         # 1=无, 2=轻度, 3=中度
+cost             <- c(200, 500, 1000, 2000)  # 费用（元/月）
+waiting_time     <- c(1, 7, 30)        # 等待时间（天）
+
+# 生成全因子候选集
+candidate_set <- expand.grid(
+  treatment_effect = treatment_effect,
+  side_effect      = side_effect,
+  cost             = cost,
+  waiting_time     = waiting_time
+)
+cat("候选集大小:", nrow(candidate_set), "\n")
+
+# ---- Step 2: 构建模型矩阵（主效应 + 可选交互项）----
+# 主效应模型
+model_formula <- ~ treatment_effect + side_effect + cost + waiting_time
+
+# 若需考虑交互效应（谨慎使用，会增加所需行数）:
+# model_formula <- ~ (treatment_effect + side_effect + cost + waiting_time)^2
+
+model_matrix <- model.matrix(model_formula, data = candidate_set)
+cat("模型参数数量:", ncol(model_matrix), "\n")  # 包含截距
+
+# ---- Step 3: Federov 交换算法最大化 D-效率 ----
+# nTrials: 设计行数（建议为参数数量的 3-5 倍）
+n_params <- ncol(model_matrix) - 1  # 不含截距
+n_trials <- n_params * 4            # 行数 = 参数数×4
+
+set.seed(2024)
+optimal_result <- optFederov(
+  frml    = model_formula,
+  data    = candidate_set,
+  nTrials = n_trials,
+  criterion = "D",       # D-最优准则（最大化行列式）
+  nRepeats  = 20,        # 重复次数，增大可提高质量
+  nullify   = 1          # 处理不可估参数
+)
+
+cat("\n最优设计（前6行）:\n")
+print(head(optimal_result$design))
+cat("\nD-效率:", round(optimal_result$Dea, 4), "\n")
+cat("设计行数:", nrow(optimal_result$design), "\n")
+
+# ---- Step 4: 替换编码为水平标签 ----
+design_max <- optimal_result$design
+design_max$treatment_effect <- paste0(design_max$treatment_effect, "%")
+design_max$side_effect <- factor(design_max$side_effect,
+                                  levels = c(1,2,3),
+                                  labels = c("无","轻度","中度"))
+design_max$cost <- paste0(design_max$cost, "元/月")
+design_max$waiting_time <- paste0(design_max$waiting_time, "天")
+
+cat("\n标签化设计:\n")
+print(design_max)
+
+# ---- Step 5: 将设计行配对为选择集 ----
+n_choice_sets <- floor(nrow(design_max) / 2)
+choice_set_id <- rep(1:n_choice_sets, each = 2)
+alt_id        <- rep(c("方案A", "方案B"), n_choice_sets)
+
+# 若行数为奇数则截断
+design_pairs <- design_max[1:(n_choice_sets*2), ]
+design_pairs$choice_set <- choice_set_id
+design_pairs$alternative <- alt_id
+
+cat("\n配对选择集（前8行）:\n")
+print(head(design_pairs, 8))
+
+# ---- Step 6: 检验设计平衡性 ----
+cat("\n各属性水平出现频次:\n")
+for(col in c("treatment_effect","side_effect","cost","waiting_time")) {
+  cat(col, ":\n")
+  print(table(design_max[[col]]))
+}
+
+write.csv(design_pairs, "maximal_design.csv",
+          row.names = FALSE, fileEncoding = "UTF-8")
+</code></pre>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 3. D-OPTIMAL -->
+  <div class="code-section">
+    <h3><span class="badge badge-amber">03</span> D-optimal 设计</h3>
+    <p>专为 DCE 选择情境优化的 D-optimal 设计，使用 <code style="font-family:var(--mono);font-size:12px;">idefix</code> 包实现，直接针对多项 Logit 模型的信息矩阵进行优化，是目前方法论文献最推荐的设计方式。</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# DCE D-optimal 设计（针对多项Logit模型优化）
+# 使用 idefix 包，直接最大化选择模型信息矩阵行列式
+# =============================================================
+
+library(idefix)
+
+# ---- Step 1: 定义属性与水平 ----
+# lvls: 每个属性的水平数
+# coding: C = 对比编码, E = 效应编码, D = 虚拟编码
+attrs <- list(
+  treatment_effect = c("50%", "70%", "90%"),
+  side_effect      = c("无", "轻度", "中度"),
+  cost             = c("200元", "500元", "1000元", "2000元"),
+  waiting_time     = c("1天", "1周", "1个月")
+)
+
+lvls   <- sapply(attrs, length)    # 各属性水平数: c(3,3,4,3)
+coding <- rep("E", length(lvls))   # 效应编码(Effect coding)适合DCE
+
+# 参数数量（效应编码下每个属性的参数数 = 水平数-1）
+n_params <- sum(lvls - 1)
+cat("模型参数数量（不含截距）:", n_params, "\n")
+
+# ---- Step 2: 设定先验参数（零向量 = 设计局部最优；
+#              若有先验估计，代入以提升效率）----
+# 零先验（最保守，不依赖任何先验信息）
+prior_mean <- rep(0, n_params)
+
+# 若有文献先验（例如从小规模预实验或文献meta获取）:
+# prior_mean <- c(0.8, 1.2, -0.5, -0.3, -1.0, -0.8, -1.5, 0.6, 0.4)
+
+# ---- Step 3: 生成候选集 ----
+cand_set <- Profiles(
+  lvls   = lvls,
+  coding = coding
+)
+cat("候选集大小（编码后）:", nrow(cand_set), "\n")
+
+# ---- Step 4: D-optimal 协调算法 ----
+# n_sets:    选择集数量
+# n_alts:    每个选择集中的备选方案数
+# start.des: 初始设计（NULL表示随机初始化）
+n_sets <- 12   # 建议每位受访者回答10-16个选择集
+n_alts <- 2    # 每个选择集含2个备选方案
+
+set.seed(2024)
+dopt_result <- CEA(
+  lvls      = lvls,
+  coding    = coding,
+  par.draws = prior_mean,   # 使用零先验
+  n.sets    = n_sets,
+  n.alts    = n_alts,
+  cand.set  = cand_set,
+  n.start   = 12,           # 增加随机起点以逃离局部最优
+  best      = TRUE          # 仅返回最优设计
+)
+
+cat("\nD-error（越小越好）:", round(dopt_result$error, 6), "\n")
+
+# ---- Step 5: 解码与标签化 ----
+# 将效应编码转换回水平标签
+design_decoded <- Decode(
+  des    = dopt_result$design,
+  lvls   = lvls,
+  coding = coding,
+  alt.levs = attrs
+)
+
+cat("\n解码后选择集设计:\n")
+print(design_decoded$design)
+
+# ---- Step 6: 格式化为问卷格式 ----
+design_survey <- design_decoded$design
+design_survey$choice_set  <- rep(1:n_sets, each = n_alts)
+design_survey$alternative <- rep(paste0("方案", LETTERS[1:n_alts]), n_sets)
+design_survey$response    <- NA  # 预留受访者回答列
+
+# 添加属性列名
+colnames(design_survey)[1:length(attrs)] <- names(attrs)
+
+cat("\n问卷格式（前6行）:\n")
+print(head(design_survey))
+
+# ---- Step 7: 贝叶斯 D-optimal（使用先验分布，更稳健）----
+# 若要使用贝叶斯方法（BCEA函数），需设定先验分布
+cat("\n---- 贝叶斯 D-optimal 设计 ----\n")
+n_draws <- 100   # 蒙特卡洛抽样数（正式研究建议500+）
+
+# 假设先验服从正态分布
+prior_cov <- diag(0.5, n_params)  # 先验方差矩阵
+
+set.seed(2024)
+bayes_draws <- MASS::mvrnorm(
+  n  = n_draws,
+  mu = prior_mean,
+  Sigma = prior_cov
+)
+
+bayes_result <- BCEA(
+  lvls      = lvls,
+  coding    = coding,
+  par.draws = bayes_draws,
+  n.sets    = n_sets,
+  n.alts    = n_alts,
+  cand.set  = cand_set,
+  n.start   = 6
+)
+
+cat("贝叶斯 D-error:", round(bayes_result$error, 6), "\n")
+
+# ---- Step 8: 比较两种 D-optimal 设计效率 ----
+cat("\n设计效率比较:\n")
+cat("局部 D-optimal D-error:", round(dopt_result$error, 6), "\n")
+cat("贝叶斯 D-optimal D-error:", round(bayes_result$error, 6), "\n")
+
+# 导出
+write.csv(design_survey, "doptimal_design.csv",
+          row.names = FALSE, fileEncoding = "UTF-8")
+cat("\nD-optimal 设计已保存至 doptimal_design.csv\n")
+</code></pre>
+    </div>
+
+    <div class="note-box">
+      <strong>三种设计方法对比：</strong>
+      正交设计简单易用但不针对选择模型优化；最大化设计（Federov）在全因子空间搜索信息最优组合；D-optimal 设计直接针对多项 Logit 模型的 Fisher 信息矩阵最大化，是方法论文献最推荐的方式。贝叶斯 D-optimal 进一步纳入先验不确定性，当研究者有先验估计时尤为适用。
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION: ANALYSIS ===== -->
+<div id="analysis" class="section">
+  <div class="section-header">
+    <h2>数据分析 R 语言代码</h2>
+    <p>包含数据准备、三种主流选择模型的估计代码，以及支付意愿（WTP）的计算与可视化方法。</p>
+  </div>
+
+  <div class="atabs">
+    <div class="atab active" onclick="showATab('data-prep',this)">数据准备</div>
+    <div class="atab" onclick="showATab('clogit',this)">条件 Logit (CL)</div>
+    <div class="atab" onclick="showATab('mxl',this)">混合 Logit (MXL)</div>
+    <div class="atab" onclick="showATab('lcm',this)">潜在类别 (LCM)</div>
+    <div class="atab" onclick="showATab('wtp',this)">WTP 计算</div>
+  </div>
+
+  <!-- DATA PREP -->
+  <div id="ap-data-prep" class="apanel active">
+    <div class="code-section">
+      <h3>数据准备与格式转换</h3>
+      <p>DCE 数据需整理为"长格式（long format）"，每个备选方案占一行，并添加选择标识变量。</p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# DCE 数据清洗与格式化
+# 输入：宽格式调查数据（每行为一个选择任务）
+# 输出：mlogit 包所需的长格式数据
+# =============================================================
+
+library(tidyverse)
+library(mlogit)
+
+# ---- Step 1: 读取原始数据 ----
+# 假设原始数据格式：每行为一个受访者的一个选择任务
+# 变量命名规则: attr_alt (例如 cost_A, cost_B, choice)
+
+# 模拟数据示例（实际研究替换为 read.csv("your_data.csv")）
+set.seed(42)
+n_resp  <- 200  # 受访者数
+n_tasks <- 12   # 每人回答12个选择集
+
+raw_data <- expand.grid(
+  respondent_id = 1:n_resp,
+  task_id       = 1:n_tasks
+) %>%
+  mutate(
+    # 方案A的属性水平（编码值）
+    cost_A   = sample(c(200, 500, 1000, 2000), n(), replace = TRUE),
+    effect_A = sample(c(50, 70, 90), n(), replace = TRUE),
+    side_A   = sample(c(1, 2, 3), n(), replace = TRUE),
+    # 方案B的属性水平
+    cost_B   = sample(c(200, 500, 1000, 2000), n(), replace = TRUE),
+    effect_B = sample(c(50, 70, 90), n(), replace = TRUE),
+    side_B   = sample(c(1, 2, 3), n(), replace = TRUE),
+    # 受访者选择（1=选A, 2=选B，基于效用模拟）
+    choice   = sample(c(1, 2), n(), replace = TRUE, prob = c(0.55, 0.45))
+  )
+
+cat("原始数据（宽格式）前5行:\n")
+print(head(raw_data, 5))
+
+# ---- Step 2: 宽格式转长格式 ----
+long_data <- raw_data %>%
+  pivot_longer(
+    cols      = matches("_(A|B)$"),
+    names_to  = c(".value", "alternative"),
+    names_sep = "_(?=[AB]$)"
+  ) %>%
+  mutate(
+    # 创建选择标识变量（1=被选中）
+    chosen = as.integer(
+      (alternative == "A" & choice == 1) |
+      (alternative == "B" & choice == 2)
+    ),
+    # 确保变量类型正确
+    alternative   = factor(alternative),
+    respondent_id = factor(respondent_id),
+    # 属性编码为因子（用于效应编码）或保留数值
+    cost   = as.numeric(cost),
+    effect = as.numeric(effect),
+    side   = factor(side, levels = 1:3, labels = c("无","轻度","中度"))
+  ) %>%
+  arrange(respondent_id, task_id, alternative)
+
+cat("\n长格式数据前10行:\n")
+print(head(long_data, 10))
+cat("\n数据维度:", nrow(long_data), "行 ×", ncol(long_data), "列\n")
+
+# ---- Step 3: 数据完整性检查 ----
+cat("\n-- 数据质量检查 --\n")
+# 每个选择集应恰好有1行被选中
+check_choice <- long_data %>%
+  group_by(respondent_id, task_id) %>%
+  summarise(n_chosen = sum(chosen), .groups = "drop")
+
+cat("选择任务中被选中数量分布（应全为1）:\n")
+print(table(check_choice$n_chosen))
+
+# 检查缺失值
+cat("\n各列缺失值数量:\n")
+print(colSums(is.na(long_data)))
+
+# ---- Step 4: 转为 mlogit.data 格式 ----
+mlogit_data <- mlogit.data(
+  long_data,
+  choice     = "chosen",
+  shape      = "long",
+  alt.var    = "alternative",
+  id.var     = "respondent_id",
+  chid.var   = "task_id"
+)
+
+cat("\nmlogit 格式数据结构:\n")
+str(mlogit_data)
+
+# ---- Step 5: 可选 - 添加受访者特征 ----
+# 若有受访者社会经济特征，合并入主数据
+respondent_chars <- data.frame(
+  respondent_id = factor(1:n_resp),
+  age     = sample(18:70, n_resp, replace = TRUE),
+  gender  = sample(c("男","女"), n_resp, replace = TRUE),
+  income  = sample(c("低","中","高"), n_resp, replace = TRUE),
+  edu     = sample(c("高中及以下","大专/本科","研究生"), n_resp, replace = TRUE)
+)
+
+long_data_full <- long_data %>%
+  left_join(respondent_chars, by = "respondent_id")
+
+cat("\n含受访者特征的数据（前3行）:\n")
+print(head(long_data_full, 3))
+
+# 保存清洁数据
+save(long_data, mlogit_data, respondent_chars, file = "dce_data.RData")
+cat("\n数据已保存至 dce_data.RData\n")
+</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOGIT -->
+  <div id="ap-clogit" class="apanel">
+    <div class="code-section">
+      <h3>条件 Logit 模型 (CL / MNL)</h3>
+      <p>最基础的 DCE 模型，假设参数在所有受访者间相同（固定效用），使用 <code style="font-family:var(--mono);font-size:12px;">mlogit</code> 包估计。</p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# 条件 Logit / 多项 Logit 模型 (CL/MNL)
+# 假设：IIA (无关选项独立性)，固定参数，同质偏好
+# =============================================================
+
+library(mlogit)
+library(tidyverse)
+
+load("dce_data.RData")  # 加载准备好的数据
+
+# ---- Step 1: 基本 CL 模型（主效应）----
+cl_model <- mlogit(
+  chosen ~ cost + effect + side | 0,  # |0 表示不含备选方案特定常数 (ASC)
+  data  = mlogit_data,
+  shape = "long",
+  alt.var = "alternative"
+)
+
+cat("=== 条件 Logit 模型结果 ===\n")
+summary(cl_model)
+
+# 提取关键指标
+cat("\n模型拟合指标:\n")
+loglik_null  <- -nrow(mlogit_data)/2 * log(2)  # 等概率模型对数似然
+loglik_model <- as.numeric(cl_model$logLik)
+mcfadden_r2  <- 1 - loglik_model / loglik_null
+cat("McFadden R²:", round(mcfadden_r2, 4), "\n")
+cat("AIC:", AIC(cl_model), "\n")
+cat("BIC:", BIC(cl_model), "\n")
+
+# ---- Step 2: 含 ASC 的模型（适用于包含"不选"选项的设计）----
+# 若问卷含第三个选项（如"两个都不选"），取消注释
+# cl_model_asc <- mlogit(
+#   chosen ~ cost + effect + side | 1,  # |1 加入 ASC
+#   data = mlogit_data, reflevel = "B"
+# )
+
+# ---- Step 3: 含交互项的模型 ----
+cl_model_int <- mlogit(
+  chosen ~ cost + effect + side + cost:effect | 0,
+  data = mlogit_data
+)
+
+# 模型比较（似然比检验）
+lrtest_result <- lrtest(cl_model, cl_model_int)
+cat("\n主效应 vs 含交互项模型（LR检验）:\n")
+print(lrtest_result)
+
+# ---- Step 4: 提取系数与置信区间 ----
+coef_table <- data.frame(
+  parameter = names(coef(cl_model)),
+  estimate  = coef(cl_model),
+  std_error = sqrt(diag(vcov(cl_model))),
+  z_value   = coef(cl_model) / sqrt(diag(vcov(cl_model)))
+) %>%
+  mutate(
+    p_value  = 2 * pnorm(-abs(z_value)),
+    ci_lower = estimate - 1.96 * std_error,
+    ci_upper = estimate + 1.96 * std_error,
+    sig      = case_when(
+      p_value < 0.001 ~ "***",
+      p_value < 0.01  ~ "**",
+      p_value < 0.05  ~ "*",
+      p_value < 0.1   ~ ".",
+      TRUE            ~ ""
+    )
+  )
+
+cat("\n系数估计与置信区间:\n")
+print(coef_table %>% select(-std_error) %>% mutate(across(where(is.numeric), ~round(.,4))))
+
+# ---- Step 5: IIA 检验（Hausman-McFadden）----
+# 去掉一个选项重新估计，检验 IIA 假设是否成立
+cat("\n注：IIA 检验需在含3个以上选项的设计中使用 hmftest() 函数\n")
+
+# ---- Step 6: 可视化系数 ----
+library(ggplot2)
+coef_plot_data <- coef_table %>%
+  mutate(parameter = factor(parameter, levels = rev(parameter)))
+
+p_coef <- ggplot(coef_plot_data, aes(x = estimate, y = parameter)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray50") +
+  geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
+                 height = 0.2, color = "#1a6b5a", linewidth = 0.8) +
+  geom_point(size = 3, color = "#1a6b5a") +
+  theme_minimal(base_size = 13) +
+  labs(title = "条件 Logit 模型系数（95% CI）",
+       x = "效用系数估计", y = "") +
+  theme(panel.grid.minor = element_blank())
+
+print(p_coef)
+ggsave("cl_coefficients.png", p_coef, width = 8, height = 5, dpi = 150)
+</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- MXL -->
+  <div id="ap-mxl" class="apanel">
+    <div class="code-section">
+      <h3>混合 Logit 模型 (MXL / Mixed Logit)</h3>
+      <p>允许参数在受访者间随机变化（异质偏好），放松 IIA 假设，是目前 DCE 最常用的估计方法，使用模拟最大似然法（MSLE）估计。</p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# 混合 Logit 模型 (Mixed Logit / Random Parameters Logit)
+# 允许偏好异质性，通过随机系数捕捉个体差异
+# =============================================================
+
+library(mlogit)
+library(mixl)    # 可选，提供更灵活的混合Logit估计
+library(tidyverse)
+
+load("dce_data.RData")
+
+# ---- Step 1: 基础混合 Logit（正态分布随机参数）----
+cat("估计混合 Logit 模型（可能需要2-5分钟）...\n")
+
+mxl_normal <- mlogit(
+  chosen ~ cost + effect + side | 0,
+  data   = mlogit_data,
+  panel  = TRUE,       # 使用面板数据结构（同一受访者多个任务）
+  rpar   = c(          # 指定随机参数及其分布
+    cost   = "n",      # 正态分布（注：价格参数有时用对数正态 "ln"）
+    effect = "n",      # 正态分布
+    side2  = "n",      # 轻度副作用（相对于基准"无"）
+    side3  = "n"       # 中度副作用
+  ),
+  R      = 500,        # 抽样次数（越大越精确，建议正式分析用1000+）
+  seed   = 42,
+  halton = NA,         # 使用 Halton 序列（比随机抽样更高效）
+  correlation = FALSE  # 是否估计随机参数间的相关性
+)
+
+cat("\n=== 混合 Logit 模型（独立随机参数）===\n")
+summary(mxl_normal)
+
+# ---- Step 2: 含相关随机参数的 MXL ----
+cat("\n估计含相关结构的混合 Logit 模型...\n")
+mxl_corr <- mlogit(
+  chosen ~ cost + effect + side | 0,
+  data        = mlogit_data,
+  panel       = TRUE,
+  rpar        = c(cost = "n", effect = "n", side2 = "n", side3 = "n"),
+  R           = 500,
+  seed        = 42,
+  halton      = NA,
+  correlation = TRUE   # 估计随机参数间协方差矩阵
+)
+
+summary(mxl_corr)
+
+# Cholesky 分解矩阵（对角线 = 标准差，非对角线 = 相关系数）
+cat("\n随机参数相关矩阵:\n")
+print(round(cov2cor(cov.mlogit(mxl_corr)), 3))
+
+# ---- Step 3: 对数正态分布（适用于价格参数，确保符号一致）----
+mxl_lognorm <- mlogit(
+  chosen ~ cost + effect + side | 0,
+  data  = mlogit_data,
+  panel = TRUE,
+  rpar  = c(
+    cost   = "ln",   # 对数正态（估计值为负，需加负号）
+    effect = "n",
+    side2  = "n",
+    side3  = "n"
+  ),
+  R    = 500,
+  seed = 42
+)
+summary(mxl_lognorm)
+
+# ---- Step 4: 提取均值和标准差参数 ----
+coef_mxl <- coef(mxl_normal)
+# 均值参数（前半部分）和标准差参数（后半部分，前缀为"sd."）
+mean_params <- coef_mxl[!grepl("^sd\\.", names(coef_mxl))]
+sd_params   <- coef_mxl[grepl("^sd\\.", names(coef_mxl))]
+
+cat("\n随机参数均值:\n"); print(round(mean_params, 4))
+cat("\n随机参数标准差:\n"); print(round(abs(sd_params), 4))
+
+# ---- Step 5: 条件（个体）参数估计 ----
+# 利用贝叶斯定理估计每位受访者的条件期望参数
+# 需要受访者标识符与模型兼容
+individual_params <- fitted(mxl_normal, type = "parameters")
+cat("\n个体条件参数估计（前6行）:\n")
+print(head(individual_params, 6))
+
+# 可视化个体参数分布
+df_ind <- as.data.frame(individual_params)
+p_het <- ggplot(df_ind, aes(x = cost)) +
+  geom_histogram(bins = 30, fill = "#1a6b5a", alpha = 0.7, color = "white") +
+  geom_vline(xintercept = mean(df_ind$cost), linetype = "dashed", color = "#c4832a") +
+  theme_minimal(base_size = 13) +
+  labs(title = "费用属性个体条件参数分布",
+       x = "费用参数估计值", y = "频次") +
+  theme(panel.grid.minor = element_blank())
+print(p_het)
+
+# ---- Step 6: 模型比较 ----
+cat("\n=== 模型比较 ===\n")
+models_aic <- data.frame(
+  Model = c("条件Logit", "MXL(独立)", "MXL(相关)"),
+  AIC   = c(AIC(cl_model), AIC(mxl_normal), AIC(mxl_corr)),
+  BIC   = c(BIC(cl_model), BIC(mxl_normal), BIC(mxl_corr)),
+  LogLik = c(logLik(cl_model), logLik(mxl_normal), logLik(mxl_corr))
+)
+print(models_aic %>% mutate(across(where(is.numeric), ~round(.,2))))
+</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- LCM -->
+  <div id="ap-lcm" class="apanel">
+    <div class="code-section">
+      <h3>潜在类别模型 (LCM)</h3>
+      <p>将样本划分为偏好结构不同的若干潜在类别，同一类别内参数固定，类别成员资格由概率决定。使用 <code style="font-family:var(--mono);font-size:12px;">gmnl</code> 包实现。</p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# 潜在类别模型 (Latent Class Model, LCM)
+# 捕捉受访者间的离散偏好异质性
+# =============================================================
+
+library(gmnl)
+library(tidyverse)
+
+load("dce_data.RData")
+
+# ---- Step 1: 确定最优类别数（BIC准则）----
+cat("正在估计不同类别数的 LCM 模型...\n")
+
+bic_results <- data.frame(
+  classes = integer(),
+  loglik  = numeric(),
+  n_params = integer(),
+  AIC     = numeric(),
+  BIC     = numeric()
+)
+
+for (k in 2:5) {
+  cat("估计", k, "类模型...\n")
+  tryCatch({
+    lcm_k <- gmnl(
+      chosen ~ cost + effect + side | 0 | 0 | 0 | 1,
+      data   = mlogit_data,
+      model  = "lc",
+      Q      = k,        # 类别数
+      panel  = TRUE,
+      method = "bhhh",   # BHHH 优化算法
+      iterlim = 500,
+      print.level = 0
+    )
+    n_par <- length(coef(lcm_k))
+    n_obs <- nrow(mlogit_data) / 2
+    bic_results <- rbind(bic_results, data.frame(
+      classes  = k,
+      loglik   = as.numeric(logLik(lcm_k)),
+      n_params = n_par,
+      AIC      = -2 * logLik(lcm_k) + 2 * n_par,
+      BIC      = -2 * logLik(lcm_k) + log(n_obs) * n_par
+    ))
+  }, error = function(e) cat("  类别数", k, "估计失败:", e$message, "\n"))
+}
+
+cat("\n=== 不同类别数的模型比较 ===\n")
+print(bic_results %>% mutate(across(where(is.numeric), ~round(.,2))))
+cat("建议选择 BIC 最小的类别数\n")
+
+# ---- Step 2: 估计最优类别数模型（以3类为例）----
+best_k <- bic_results$classes[which.min(bic_results$BIC)]
+cat("\n根据 BIC，最优类别数为:", best_k, "\n")
+
+set.seed(42)
+lcm_best <- gmnl(
+  chosen ~ cost + effect + side | 0 | 0 | 0 | 1,
+  data   = mlogit_data,
+  model  = "lc",
+  Q      = best_k,
+  panel  = TRUE,
+  method = "bhhh",
+  iterlim = 500
+)
+
+cat("\n=== 潜在类别模型结果 ===\n")
+summary(lcm_best)
+
+# ---- Step 3: 提取各类别参数与类别规模 ----
+coef_lcm <- coef(lcm_best)
+
+# 分离类别参数和类别成员概率参数
+class_coefs <- matrix(coef_lcm[!grepl("^class", names(coef_lcm))],
+                       ncol = best_k)
+colnames(class_coefs) <- paste0("Class ", 1:best_k)
+rownames(class_coefs) <- c("cost", "effect", "side轻度", "side中度")
+
+cat("\n各类别效用系数:\n")
+print(round(class_coefs, 4))
+
+# 类别规模（成员概率）
+class_probs <- lcm_best$prob.class
+cat("\n各类别成员比例:\n")
+print(round(colMeans(class_probs), 3))
+
+# ---- Step 4: 个体类别归属预测 ----
+# 根据最大后验概率分配每位受访者到类别
+class_assignment <- apply(class_probs, 1, which.max)
+class_dist <- table(class_assignment)
+cat("\n样本类别分配:\n")
+print(class_dist)
+cat("各类别占比:", round(prop.table(class_dist) * 100, 1), "%\n")
+
+# ---- Step 5: 解释类别特征 ----
+# 结合受访者特征分析各类别的社会经济画像
+# 注：需将 respondent_chars 与类别分配合并
+
+# 类别 WTP 计算
+wtp_by_class <- data.frame(
+  Class = paste0("Class ", 1:best_k)
+)
+
+for (k in 1:best_k) {
+  wtp_by_class[k, "WTP_effect"] <- -class_coefs["effect", k] / class_coefs["cost", k]
+  wtp_by_class[k, "WTP_side_light"] <- -class_coefs["side轻度", k] / class_coefs["cost", k]
+  wtp_by_class[k, "WTP_side_mod"] <- -class_coefs["side中度", k] / class_coefs["cost", k]
+}
+
+cat("\n各类别支付意愿（元/月）:\n")
+print(round(wtp_by_class, 2))
+
+# ---- Step 6: 类别偏好雷达图可视化 ----
+library(ggplot2)
+class_coefs_df <- as.data.frame(t(class_coefs)) %>%
+  rownames_to_column("class") %>%
+  pivot_longer(-class, names_to = "attribute", values_to = "utility")
+
+p_class <- ggplot(class_coefs_df, aes(x = attribute, y = utility,
+                                       fill = class, group = class)) +
+  geom_col(position = "dodge", alpha = 0.85) +
+  geom_hline(yintercept = 0, linewidth = 0.5) +
+  scale_fill_manual(values = c("#1a6b5a","#c4832a","#3b5fa0")) +
+  theme_minimal(base_size = 13) +
+  labs(title = "各潜在类别效用系数比较",
+       x = "属性", y = "效用系数", fill = "类别") +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "top")
+print(p_class)
+ggsave("lcm_classes.png", p_class, width = 9, height = 5, dpi = 150)
+</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- WTP -->
+  <div id="ap-wtp" class="apanel">
+    <div class="code-section">
+      <h3>支付意愿 (WTP) 计算与可视化</h3>
+      <p>从模型系数计算 WTP 值，并使用 Krinsky-Robb 法（参数 Bootstrap）构建置信区间，最后进行森林图可视化。</p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+<pre><code class="language-r"># =============================================================
+# 支付意愿 (WTP) 计算与不确定性分析
+# 方法：Krinsky-Robb 参数 Bootstrap（推荐）
+# =============================================================
+
+library(mlogit)
+library(MASS)
+library(tidyverse)
+
+load("dce_data.RData")
+
+# ---- Step 1: 估计模型（以条件Logit为例）----
+cl_model <- mlogit(
+  chosen ~ cost + effect + side | 0,
+  data = mlogit_data
+)
+
+# ---- Step 2: 点估计 WTP ----
+b <- coef(cl_model)
+b_cost <- b["cost"]  # 费用系数（应为负值）
+
+# WTP = -(非价格属性系数) / (价格属性系数)
+wtp_point <- data.frame(
+  attribute   = c("效果提升 (+1%)", "副作用:轻度 vs 无", "副作用:中度 vs 无"),
+  wtp_estimate = c(
+    -b["effect"]   / b_cost,
+    -b["side轻度"] / b_cost,
+    -b["side中度"] / b_cost
+  )
+)
+cat("=== WTP 点估计（元/月）===\n")
+print(round(wtp_point, 2))
+
+# ---- Step 3: Krinsky-Robb 置信区间 ----
+n_draws <- 10000   # Bootstrap 抽样次数（建议10000以上）
+set.seed(2024)
+
+# 从参数的渐近正态分布中抽样
+coef_draws <- mvrnorm(
+  n     = n_draws,
+  mu    = coef(cl_model),
+  Sigma = vcov(cl_model)
+)
+head(coef_draws)
+
+# 计算每次抽样的 WTP
+wtp_draws <- data.frame(
+  WTP_effect     = -coef_draws[,"effect"]   / coef_draws[,"cost"],
+  WTP_side_light = -coef_draws[,"side轻度"] / coef_draws[,"cost"],
+  WTP_side_mod   = -coef_draws[,"side中度"] / coef_draws[,"cost"]
+)
+
+# 去除极端值（可选：Poe et al. 截断法）
+wtp_clean <- wtp_draws %>%
+  filter(
+    between(WTP_effect,     quantile(WTP_effect,     0.01), quantile(WTP_effect,     0.99)),
+    between(WTP_side_light, quantile(WTP_side_light, 0.01), quantile(WTP_side_light, 0.99)),
+    between(WTP_side_mod,   quantile(WTP_side_mod,   0.01), quantile(WTP_side_mod,   0.99))
+  )
+
+# 计算均值和 95% CI
+wtp_ci <- wtp_clean %>%
+  summarise(across(everything(), list(
+    mean  = mean,
+    lower = ~quantile(., 0.025),
+    upper = ~quantile(., 0.975)
+  ))) %>%
+  pivot_longer(everything(),
+               names_to  = c("attribute", ".value"),
+               names_sep = "_(?=mean|lower|upper)")
+
+cat("\n=== WTP 估计（95% CI）===\n")
+print(round(wtp_ci, 2))
+
+# ---- Step 4: 完整 WTP 汇总表 ----
+wtp_table <- wtp_ci %>%
+  mutate(
+    attribute = case_when(
+      attribute == "WTP_effect"     ~ "治疗效果提升1%",
+      attribute == "WTP_side_light" ~ "轻度副作用（vs无）",
+      attribute == "WTP_side_mod"   ~ "中度副作用（vs无）"
+    ),
+    label = sprintf("%.1f元 (%.1f, %.1f)", mean, lower, upper)
+  )
+cat("\n=== WTP 汇总（元/月，95% CI）===\n")
+print(wtp_table %>% select(attribute, label))
+
+# ---- Step 5: WTP 森林图 ----
+p_wtp <- ggplot(wtp_table, aes(x = mean, y = reorder(attribute, mean))) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray50", linewidth = 0.8) +
+  geom_errorbarh(aes(xmin = lower, xmax = upper),
+                 height = 0.25, color = "#1a6b5a", linewidth = 1) +
+  geom_point(size = 4, color = "#1a6b5a") +
+  geom_text(aes(label = label), hjust = -0.12, size = 3.5, color = "#1a6b5a") +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0.35))) +
+  theme_minimal(base_size = 13) +
+  labs(
+    title    = "支付意愿估计（Krinsky-Robb 法，95% CI）",
+    subtitle = "正值 = 愿意为该属性水平支付额外费用；负值 = 需要补偿",
+    x        = "WTP（元/月）",
+    y        = ""
+  ) +
+  theme(
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.y = element_blank(),
+    plot.subtitle      = element_text(color = "gray50", size = 11)
+  )
+
+print(p_wtp)
+ggsave("wtp_forest_plot.png", p_wtp, width = 10, height = 5, dpi = 150)
+
+# ---- Step 6: WTP 分布直方图（可选）----
+wtp_long <- wtp_clean %>%
+  pivot_longer(everything(), names_to = "attribute", values_to = "wtp") %>%
+  mutate(attribute = case_when(
+    attribute == "WTP_effect"     ~ "治疗效果",
+    attribute == "WTP_side_light" ~ "轻度副作用",
+    attribute == "WTP_side_mod"   ~ "中度副作用"
+  ))
+
+p_dist <- ggplot(wtp_long, aes(x = wtp, fill = attribute)) +
+  geom_histogram(bins = 60, alpha = 0.8, color = NA) +
+  geom_vline(data = wtp_table, aes(xintercept = mean),
+             linetype = "dashed", color = "black") +
+  facet_wrap(~attribute, scales = "free") +
+  scale_fill_manual(values = c("#1a6b5a","#c4832a","#3b5fa0")) +
+  theme_minimal(base_size = 12) +
+  labs(title = "WTP Bootstrap 分布（n=10,000次抽样）",
+       x = "WTP（元/月）", y = "频次") +
+  theme(legend.position = "none",
+        panel.grid.minor = element_blank())
+
+print(p_dist)
+ggsave("wtp_distribution.png", p_dist, width = 12, height = 4, dpi = 150)
+</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION: REFS ===== -->
+<div id="refs" class="section">
+  <div class="section-header">
+    <h2>参考文献 & R 包资源</h2>
+    <p>以下列出 DCE 领域的核心方法论文献与实用 R 包，可作为深入学习的起点。</p>
+  </div>
+
+  <h4>核心 R 包</h4>
+  <div class="pkg-grid">
+    <div class="pkg-card"><h4>mlogit</h4><p>多项/混合 Logit 模型估计，DCE 最常用包</p></div>
+    <div class="pkg-card"><h4>gmnl</h4><p>广义多项 Logit，支持潜在类别和 S-MNL 等扩展模型</p></div>
+    <div class="pkg-card"><h4>idefix</h4><p>D-optimal 和贝叶斯 D-optimal DCE 设计生成</p></div>
+    <div class="pkg-card"><h4>AlgDesign</h4><p>Federov 交换算法，通用 D-optimal 实验设计</p></div>
+    <div class="pkg-card"><h4>support.CEs</h4><p>选择实验设计与 WTP 计算支持工具</p></div>
+    <div class="pkg-card"><h4>DoE.base</h4><p>正交阵生成与正交设计基础工具</p></div>
+    <div class="pkg-card"><h4>apollo</h4><p>高级离散选择模型（复杂混合模型，需自行写效用函数）</p></div>
+    <div class="pkg-card"><h4>logitr</h4><p>偏好空间与 WTP 空间统一估计框架</p></div>
+  </div>
+
+  <hr class="divider">
+
+  <h4>核心方法文献</h4>
+  <ul class="ref-list">
+    <li><div class="ref-num">1</div><div class="ref-content"><strong>Louviere JJ, Hensher DA, Swait JD (2000).</strong> Stated Choice Methods: Analysis and Applications. Cambridge University Press. ─ DCE 方法论权威教材，覆盖设计与分析全流程。</div></li>
+    <li><div class="ref-num">2</div><div class="ref-content"><strong>Train K (2009).</strong> Discrete Choice Methods with Simulation (2nd ed.). Cambridge University Press. ─ 混合 Logit 与模拟估计方法圣经，作者网站提供免费下载。</div></li>
+    <li><div class="ref-num">3</div><div class="ref-content"><strong>McFadden D (1974).</strong> Conditional logit analysis of qualitative choice behavior. In: Zarembka P (ed). Frontiers in Econometrics. Academic Press. ─ 随机效用理论奠基之作（诺贝尔奖相关工作）。</div></li>
+    <li><div class="ref-num">4</div><div class="ref-content"><strong>Johnson FR, et al. (2013).</strong> Constructing experimental designs for discrete-choice experiments: Report of the ISPOR Conjoint Analysis Experimental Design Good Research Practices Task Force. Value in Health, 16(1):3–13. ─ 医疗卫生领域 DCE 设计的 ISPOR 指南。</div></li>
+    <li><div class="ref-num">5</div><div class="ref-content"><strong>Lancsar E, Louviere J (2008).</strong> Conducting discrete choice experiments to inform healthcare decision making: A user's guide. PharmacoEconomics, 26(8):661–677. ─ 医疗 DCE 设计与分析实用指南。</div></li>
+    <li><div class="ref-num">6</div><div class="ref-content"><strong>Sandor Z, Wedel M (2001).</strong> Designing conjoint choice experiments using managers' prior beliefs. Journal of Marketing Research, 38(4):430–444. ─ 贝叶斯 D-optimal 设计理论基础。</div></li>
+    <li><div class="ref-num">7</div><div class="ref-content"><strong>Hauber AB, et al. (2016).</strong> Statistical methods for the analysis of discrete choice experiments: A report of the ISPOR Conjoint Analysis Good Research Practices Task Force. Value in Health, 19(4):300–315. ─ DCE 统计分析的 ISPOR 最佳实践指南，含模型选择建议。</div></li>
+    <li><div class="ref-num">8</div><div class="ref-content"><strong>Fiebig DG, et al. (2010).</strong> The generalized multinomial logit model: Accounting for scale and coefficient heterogeneity. Marketing Science, 29(3):393–421. ─ S-MNL 与 G-MNL 模型，处理规模异质性。</div></li>
+  </ul>
+</div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+function showDTab(id, el) {
+  document.querySelectorAll('.dpanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+  document.getElementById('dp-' + id).classList.add('active');
+  el.classList.add('active');
+}
+function showATab(id, el) {
+  document.querySelectorAll('.apanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
+  document.getElementById('ap-' + id).classList.add('active');
+  el.classList.add('active');
+}
+function copyCode(btn) {
+  const code = btn.nextElementSibling.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '已复制 ✓';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+</script>
+</body>
+</html>
